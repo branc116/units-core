@@ -1,0 +1,7 @@
+**/packages
+**/bin/
+**/obj/
+**/.vs
+**/*_gen.cs
+**/.vscode
+**/*csproj.user
