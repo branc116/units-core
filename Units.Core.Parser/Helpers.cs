@@ -7,6 +7,9 @@ using Units.Core.Parser.State;
 
 namespace Units.Core.Parser
 {
+    /// <summary>
+    /// Helper class
+    /// </summary>
     public static class Helpers
     {
         public static string ToRegexOr(this IEnumerable<Unit> units)

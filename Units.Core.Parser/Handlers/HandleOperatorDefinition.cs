@@ -6,11 +6,34 @@ using static Units.Core.Parser.Handlers.Constants;
 namespace Units.Core.Parser.Handlers
 {
     /// <summary>
+    /// Handle lines like:
+    /// <code>
     /// Operator(/) := a = b / c | c = b / a | b = a * c | b = c * a
+    /// </code>
     /// </summary>
+    /// <remarks>
+    /// Define how the operator behaves and what the usage of the operator implies.
+    /// eg:
+    /// If it is defined that operator is:
+    /// <code>
+    /// Operator(/) := a = b / c | c = b / a | b = a * c | b = c * a
+    /// </code>
+    /// then if we define the <see cref="CompositUnit"/> that is defined like:
+    /// <code>
+    /// velocity := length / time
+    /// </code>
+    /// This will imply folowing connection:
+    /// <code>
+    /// velocity = length / time
+    /// time = length / velocity
+    /// length = velocity * time
+    /// length = time * velocity
+    /// </code>
+    /// </remarks>
     public class HandleOperatorDefinition : IHandler
     {
         private static readonly Regex _regex = new Regex($@"^Operator\(({OperatorReg})\)");
+        /// <inheritdoc/>
         public bool Handle(ParserState parserState, string input)
         {
             var op = Regex.Matches(input, $@"Operator\((?<operator>{OperatorReg})\)")[0].Groups["operator"].Value;
@@ -23,7 +46,7 @@ namespace Units.Core.Parser.Handlers
             ops.InferedOperations = difs.Select(i => (order[i.op1], i.op, order[i.op2], order[i.res])).ToList();
             return true;
         }
-
+        /// <inheritdoc/>
         public Regex MatchRegex(ParserState parserState) =>
             _regex;
     }

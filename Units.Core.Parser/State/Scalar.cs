@@ -1,5 +1,8 @@
 ﻿namespace Units.Core.Parser.State
 {
+    /// <summary>
+    /// Unit that has not 
+    /// </summary>
     public class Scalar : Unit
     {
         public Scalar()

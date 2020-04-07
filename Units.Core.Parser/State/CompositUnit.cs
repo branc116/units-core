@@ -4,11 +4,15 @@ using System.Linq;
 
 namespace Units.Core.Parser.State
 {
+    /// <summary>
+    /// Unit that is Defined by 2 other units and the operator
+    /// </summary>
     public class CompositUnit : Unit, IEquatable<CompositUnit>
     {
         public Unit Unit1 { get; set; } = new Scalar();
         public Operator Operator { get; set; }
         public Unit Unit2 { get; set; }
+        /// <inheritdoc/>
         public override string SiName()
         {
             var a = GetBaseUnitCount();
@@ -28,6 +32,32 @@ namespace Units.Core.Parser.State
                         .Aggregate((i, j) => $"{i}{j}") :
                     string.Empty);
         }
+        /// <summary>
+        /// Simplify current composit unit and return the new unit that is defined only by the <see cref="State.Unit"/>
+        /// </summary>
+        /// <returns>Simplyfied unit <see cref="CompositUnit"/> or <see cref="Scalar"/> or <see cref="Unit"/></returns>
+        /// <remarks>
+        /// Usefull for e.g.
+        /// 
+        /// Composit unit is defined as:
+        /// 
+        /// <see cref="Unit1"/> is t²,
+        /// 
+        /// <see cref="Operator"/> is /,
+        /// 
+        /// and <see cref="Unit2"/> t.
+        /// 
+        /// This is same as <see cref="Unit"/> whit <see cref="Unit.Name"/> == "t"
+        /// 
+        /// ----TODO----
+        /// 
+        /// Implementation has hardcoded values. It needs to be more general.
+        /// 
+        /// This can become more general, only when the goal on <see cref="Handlers.HandleOperators"/> is met.
+        /// 
+        /// ----TODO----
+        /// 
+        /// </remarks>
         public Unit Simplify()
         {
             var dict = GetBaseUnitCount();
@@ -107,6 +137,13 @@ namespace Units.Core.Parser.State
             unit.Name = unit.SiName();
             return unit;
         }
+        /// <summary>
+        /// Count the dimensionality for each base unit.
+        /// </summary>
+        /// <returns>Dimension for each base unit</returns>
+        /// <remarks>
+        /// Needs to be more general. Same as <see cref="Simplify"/>.
+        /// </remarks>
         public Dictionary<Unit, int> GetBaseUnitCount()
         {
             var dict = new Dictionary<Unit, int>();
@@ -153,6 +190,7 @@ namespace Units.Core.Parser.State
         {
             return this.SiName().GetHashCode();
         }
+        /// <inheritdoc/>
         public override Unit Clone()
         {
             return new CompositUnit

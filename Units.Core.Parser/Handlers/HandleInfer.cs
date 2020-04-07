@@ -5,9 +5,20 @@ using Units.Core.Parser.State;
 
 namespace Units.Core.Parser.Handlers
 {
+    /// <summary>
+    /// Handle lines:
+    /// <code>Infer</code>
+    /// Goal is:
+    /// <code>!Infer</code>
+    /// </summary>
+    /// <remarks>
+    /// Based on currently defined <see cref="State.Unit"/>, <see cref="State.CompositUnit"/> and <see cref="State.Operator"/> create new <see cref="CompositUnit"/>.
+    /// Create edges between them and store them in <see cref="State.ParserState.GraphEdges"/>
+    /// </remarks>
     public class HandleInfer : IHandler
     {
         private static readonly Regex _match = new Regex("^Infer$");
+        /// <inheritdoc/>
         public bool Handle(ParserState parserState, string input)
         {
             var newUnits = new HashSet<Unit>();
@@ -60,7 +71,7 @@ namespace Units.Core.Parser.Handlers
             }
             return true;
         }
-
+        /// <inheritdoc/>
         public Regex MatchRegex(ParserState parserState) =>
             _match;
     }

@@ -7,7 +7,8 @@ namespace Units.Core.Parser.State
     {
         public string Name { get; set; }
         public string Symbol { get; set; }
-        public Operator Inverse { get; set; }
+        public (double count, char? postfix) CountLeft { get; set; }
+        public (double count, char? postfix) CountRight { get; set; }
         public List<(int op1, Operator symbol, int op2, int res)> InferedOperations { get; set; }
         public IEnumerable<(Unit op1, Operator @operator, Unit op2, Unit res)> GetEdges(Unit op1, Unit op2, Unit res)
         {

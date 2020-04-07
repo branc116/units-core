@@ -7,9 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Units.Core", "Units.Core\Un
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Units.Core.Parser", "Units.Core.Parser\Units.Core.Parser.csproj", "{90B08EB0-8553-417A-8FCD-48FDB4DF1A44}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Units.Core.Parser.Tests", "Units.Core.Parser.Tests\Units.Core.Parser.Tests.csproj", "{7B82C37E-0FE3-4E23-B9AF-190AC51CD4FA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Units.Core.Parser.Tests", "Units.Core.Parser.Tests\Units.Core.Parser.Tests.csproj", "{7B82C37E-0FE3-4E23-B9AF-190AC51CD4FA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Units.Core.Sample", "Units.Core.Sample\Units.Core.Sample.csproj", "{67872E22-59FD-4B36-A99C-7E7C75C72835}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Units.Core.Sample", "Units.Core.Sample\Units.Core.Sample.csproj", "{67872E22-59FD-4B36-A99C-7E7C75C72835}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{0C47AE65-9C02-48E2-A9B5-B1C27E00A6F1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

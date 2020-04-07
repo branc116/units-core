@@ -6,10 +6,15 @@ using static Units.Core.Parser.Handlers.Constants;
 
 namespace Units.Core.Parser.Handlers
 {
+    /// <summary>
+    /// Handles lines like:
+    /// <code>Velocity := Length / Time</code>
+    /// </summary>
     public class HandleComposit : IHandler
     {
         public static readonly Regex Match = new Regex($@"{UnitName} *:= {UnitName} {OperatorReg} {UnitName}$");
         private static readonly Regex _match = new Regex($@"(?<new>{UnitName}) := (?<op1>{UnitName}) *(?<operator>{OperatorReg}) *(?<op2>{UnitName})$");
+        /// <inheritdoc/>
         public bool Handle(ParserState parserState, string s)
         {
             var groups = _match.Matches(s)[0]
@@ -34,6 +39,7 @@ namespace Units.Core.Parser.Handlers
             };
             return true;
         }
+        /// <inheritdoc/>
         public Regex MatchRegex(ParserState parserState) =>
             Match;
     }
