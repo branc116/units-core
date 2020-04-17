@@ -5,3 +5,8 @@
 **/*_gen.cs
 **/.vscode
 **/*csproj.user
+Units.Core.Parser/Grammar/.bin
+Units.Core.Parser/Grammar/.antlr
+Units.Core.Parser/Grammar/*.cs
+Units.Core.Parser/Grammar/*.interp
+Units.Core.Parser/Grammar/*.tokens
