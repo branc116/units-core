@@ -66,7 +66,6 @@ namespace Units.Core.Parser
             var i = 0;
             foreach (var line in lines)
             {
-
                 i++;
                 var s = line;
                 var handler = handlers.FirstOrDefault(j => j.MatchRegex(state).IsMatch(s));
