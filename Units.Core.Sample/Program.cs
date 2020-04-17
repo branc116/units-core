@@ -7,7 +7,7 @@ namespace Units.Core.Sample
         {
             var definition = @"
 Base(Unit) := Mass | Length | Time | Temperature | ElectricCurent | AmountOfSubstance | LuninusIntensity
-Operations := (*, Times) | (/, Per)
+Operators(Binary) := (*, Times, 1, 1) | (/, Per, 1, -1)
 SelfOps := (<, Lt, bool) | (<=, Let, bool) | (>, Gt, bool) | (>=, Get, bool) | (==, Eq, bool) | (!=, Ne, bool) | (+, Plus, null) | (-, Minus, null) | (*, Times, null) | (/, Per, null)
 Real(Types) := (float, RealFloat)
 
@@ -23,7 +23,7 @@ Pressure := Force / Area
 Energy := Force * Length
 
 Infer
-
+Infer
 
 Unit(Mass) := gram(i, g)
 Unit(Length) := meter(i, m)
@@ -32,6 +32,7 @@ Unit(Temperature) := kelvin(i, K) | celsius(i + 273, ˙C)
 Unit(Force) := newton(i, N)
 ";
             var lines = definition.Split(Environment.NewLine);
+            var state = Parser.Parser.Parse(lines);
             var generator = new GenerateUnits(lines);
             var res = generator.TransformText();
             System.IO.File.WriteAllText("Out_gen.cs", res);
