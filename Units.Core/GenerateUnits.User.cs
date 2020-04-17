@@ -1,7 +1,10 @@
-﻿namespace Units.Core
+﻿using System.Collections.Generic;
+using Units.Core.Parser.State;
+
+namespace Units.Core
 {
     /// <summary>
-    /// Generate struct definitions from <see cref="Lines"/>
+    /// Generate struct definitions
     /// </summary>
     public partial class GenerateUnits
     {
@@ -76,9 +79,29 @@
         ///</code>
         ///</remarks>
         public string[] Lines { get; set; }
+        public ParserState State { get; set; }
+        public Dictionary<IUnit, HashSet<(Operator op, IUnit op2, IUnit res)>> GraphEdges { get; }
+        public HashSet<MesurmentUnit> MesurmentUnits { get; }
+        public HashSet<Operator> Operators { get; }
+        public HashSet<RealDef> RealDefs { get; }
+        public HashSet<SelfOp> SelfOps { get; }
+        public HashSet<IUnit> Units { get; }
+        public IUnit Scalar => Parser.State.Scalar.Get;
         public GenerateUnits(string[] lines)
         {
             Lines = lines;
+            State = Parser.Parser.Parse(lines);
+            GraphEdges = State.GraphEdges;
+            MesurmentUnits = State.MesurmentUnits;
+            Operators = State.Operators;
+            RealDefs = State.RealDefs;
+            SelfOps = State.SelfOps;
+            Units = State.Units;
+        }
+        public string EdgeOps(IUnit forUnit)
+        {
+            var text = new GenerateEdgeOperators(State, forUnit).TransformText();
+            return text;
         }
     }
 }

@@ -2,21 +2,19 @@
 <#@ assembly name="System.Core" #>
 <#@ import namespace="System.Linq"#>
 <#@ output extension=".cs" #>
-<#
-var state = Units.Core.Parser.Parser.Parse(Lines);
-var (units, a, c, selfOps, reals, edges) = (state.Units, state.Operators, state.MesurmentUnits, state.SelfOps, state.RealDefs, state.GraphEdges);
-#>
 namespace Numbers {
     public interface IReal<T> where T: IReal<T> {
-        <# foreach(var meth in selfOps) { #>
+        <# foreach(var meth in SelfOps) { #>
              public <#= meth.RetType ?? "T" #> Op<#= meth.Name  #>(T op2);
         <#  } #>
     }
 }
-<#  foreach(var r in reals) { #>
+<#  foreach(var r in RealDefs) { #>
 namespace Numbers.<#= r.WrapName #>s {
     using Numbers;
     using System;
+    using Scalar = Numbers.<#= r.WrapName #>s.<#= r.WrapName #>;
+
     public readonly struct <#=  r.WrapName #> : IEquatable<<#=  r.WrapName #>>, IReal<<#= r.WrapName #>> {
         private readonly <#= r.ClrName #> _data;
         public <#=  r.WrapName #>(<#= r.ClrName #> data) {
@@ -25,13 +23,9 @@ namespace Numbers.<#= r.WrapName #>s {
         public <#=  r.WrapName #>(<#= r.WrapName #> data) {
             _data = data._data;
         }
-        public static implicit operator <#=  r.WrapName #>(<#= r.ClrName #> raw) {
-            return new <#= r.WrapName #>(raw);
-        }
-        public static explicit operator <#=  r.ClrName #>(<#= r.WrapName #> raw) {
-            return raw._data;
-        }
-        <# foreach(var meth in selfOps) { #>
+        public static implicit operator <#=  r.WrapName #>(<#= r.ClrName #> raw) => new <#= r.WrapName #>(raw);
+        public static explicit operator <#=  r.ClrName #>(<#= r.WrapName #> raw) => raw._data;
+        <# foreach(var meth in SelfOps) { #>
             public <#= meth.RetType ?? r.WrapName #> Op<#= meth.Name  #>(<#= r.WrapName #> op2) {
                 return _data <#=  meth.Symbol #> op2._data;
             }
@@ -43,76 +37,44 @@ namespace Numbers.<#= r.WrapName #>s {
                 <#  } #>
             }
         <#  } #>
-
-        public override bool Equals(object obj)
-        {
-            return obj is <#=  r.WrapName #> wn && Equals(wn);
-        }
-
-        public bool Equals(<#=  r.WrapName #> other)
-        {
-            return this._data == other._data;
-        }
-
-        public override int GetHashCode()
-        {
-            return _data.GetHashCode();
-        }
-        public override string ToString()
-        {
-            return _data.ToString();
-        }
+        <#=  EdgeOps(Scalar) #>
+        public override bool Equals(object obj) => obj is <#=  r.WrapName #> wn && Equals(wn);
+        public bool Equals(<#=  r.WrapName #> other) => this._data == other._data;
+        public override int GetHashCode() => _data.GetHashCode();
+        public override string ToString() => _data.ToString();
     }
 }
 <#  } #>
-<#  foreach(var real in reals) { #>
+<#  foreach(var real in RealDefs) { #>
 namespace Units.<#= real.WrapName #> {
     using Numbers.<#= real.WrapName #>s;
     using System;
     using Scalar = Numbers.<#= real.WrapName #>s.<#= real.WrapName #>;
 
-<#  foreach(var unit in units) { #>
+<#  foreach(var unit in Units.Where(i => i.Name != "Scalar")) { #>
+<#  Console.WriteLine(unit); #>
     public readonly struct <#= unit.Name  #>: IEquatable<<#= unit.Name  #>> {
         public readonly Scalar RawValue;
         public <#=  unit.Name #>(Scalar value) {
             RawValue = value;
         }
-        <# foreach(var meth in selfOps.Where(i => i.Symbol != "*" && i.Symbol != "/")) { #>
-            public static <#=  meth.RetType ?? unit.Name #> operator <#=  meth.Symbol #>(<#= unit.Name #> op1, <#= unit.Name #> op2) {
-                var val = op1.RawValue.Op<#=  meth.Name #>(op2.RawValue);
+        <# foreach(var meth in SelfOps.Where(i => i.Symbol != "*" && i.Symbol != "/")) { #>
+            public static <#=  meth.RetType ?? unit.Name #> operator <#=  meth.Symbol #>(<#= unit.Name #> op1, <#= unit.Name #> op2) =>
                 <#  if (meth.RetType == null) { #>
-                return new <#=  unit.Name #>(val);
+                new <#=  unit.Name #>(op1.RawValue.Op<#=  meth.Name #>(op2.RawValue));
                 <#  } else { #>
-                return val;
+                <#=  unit.Name #>(op1.RawValue.Op<#=  meth.Name #>(op2.RawValue));;
                 <#  } #>
-            }
         <#  } #>
-        public override bool Equals(object obj)
-        {
-            return obj is <#= unit.Name  #> ut && this.Equals(ut);
-        }
+        <#=  EdgeOps(unit) #>
 
-        public bool Equals(<#= unit.Name #> other)
-        {
-            return true; //return other != null && this == other;
-        }
-
-        public override int GetHashCode()
-        {
-            return RawValue.GetHashCode();
-        }
-        <# if (edges.ContainsKey(unit)) foreach(var op in edges[unit].Where(i => units.Any(g => g.SiName() == i.op2.SiName()))) { #>
-            public static <#= op.res.Name #> operator <#= op.op.Symbol#>(<#= unit.Name #> u1, <#= op.op2.Name #> u2) {
-                var val = u1.RawValue.Op<#=  op.op.Name #>((Scalar)u2);
-                return new <#=  op.res.Name #>(val);
-            }
-        <# } #>
-        public static implicit operator <#= unit.Name #>(<#= real.ClrName #> from) {
-            return new <#=  unit.Name #>(from);
-        }
-        public static explicit operator Scalar(<#= unit.Name #> from) {
-            return from.RawValue;
-        }
+        public static explicit operator <#= unit.Name #>(<#= real.ClrName #> from) => new <#=  unit.Name #>(from);
+        public static explicit operator <#= unit.Name #>(Scalar from) => new <#=  unit.Name #>(from);
+        public static explicit operator Scalar(<#= unit.Name #> from) => from.RawValue;
+        public static explicit operator <#= real.ClrName #>(<#= unit.Name #> from) => (<#= real.ClrName #>)from.RawValue;
+        public override bool Equals(object obj) => obj is <#= unit.Name  #> ut && this.Equals(ut);
+        public bool Equals(<#= unit.Name #> other) => true; //return other != null && this == other;
+        public override int GetHashCode() => RawValue.GetHashCode();
     }
 <#  } #>
 }

@@ -14,6 +14,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="GenerateEdgeOperators.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>GenerateEdgeOperators.cs</LastGenOutput>
+    </None>
     <None Update="GenerateUnits.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>GenerateUnits.cs</LastGenOutput>
@@ -25,6 +29,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="GenerateEdgeOperators.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>GenerateEdgeOperators.tt</DependentUpon>
+    </Compile>
     <Compile Update="GenerateUnits.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
