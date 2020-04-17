@@ -1,36 +1,49 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
+﻿using System;
 using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Units.Core.Parser.State;
 namespace Units.Core.Parser.Tests
 {
     [TestClass]
     public class ParserTests
     {
+        private static Operator _times = new Operator("Times", "*")
+        {
+            CountLeft = (1, null),
+            CountRight = (1, null)
+        };
+        private static Operator _over = new Operator("Over", "/")
+        {
+            CountLeft = (1, null),
+            CountRight = (-1, null)
+        };
+
         [TestMethod]
         public void ATimesB_Equals_BTimesA()
         {
-            var u1 = new Unit { Name = "Lenght" };
-            var u2 = new Unit { Name = "Mass" };
-            var u3 = new CompositUnit { Operator = new Operator { Name = "Times", Symbol = "*" }, Unit1 = u1, Unit2 = u2 };
-            var u4 = new CompositUnit { Operator = new Operator { Name = "Times", Symbol = "*" }, Unit1 = u2, Unit2 = u1 };
+            var u1 = new Unit("Lenght");
+            var u2 = new Unit("Mass");
+            var u3 = new CompositUnit(u1, _times, u2, null);
+            var u4 = new CompositUnit(u2, _times, u1, null);
             Assert.AreEqual(u3, u4);
         }
         [TestMethod]
         public void APerA_Equals_Scalar()
         {
-            var u1 = new Unit { Name = "Lenght" };
-            var u3 = new CompositUnit { Operator = new Operator { Name = "Times", Symbol = "/" }, Unit1 = u1, Unit2 = u1 };
-            Assert.AreEqual(u3, new Scalar());
+            var u1 = new Unit("Lenght");
+            var u3 = new CompositUnit(u1, _over, u1);
+            Assert.AreEqual(u3.SiName(), Scalar.Get.SiName());
+            Assert.AreEqual(u3, Scalar.Get);
         }
         [TestMethod]
         public void ScalarTimesScalar_Eqals_Scalar()
         {
-            var u1 = new Scalar();
-            var u2 = new Scalar();
-            var u3 = new CompositUnit { Operator = new Operator { Name = "Times", Symbol = "*" }, Unit1 = u1, Unit2 = u2 };
+            var u1 = Scalar.Get;
+            var u2 = Scalar.Get;
+            var u3 = new CompositUnit(u1, _times, u2);
             Assert.AreEqual(u3, u1);
             Assert.AreEqual(u3, u2);
+            Assert.AreEqual(u2, u3);
         }
         [TestMethod]
         public void CheckHandlersCount()
@@ -43,7 +56,7 @@ namespace Units.Core.Parser.Tests
         {
             var input = @"
 Base(Unit) := Mass | Length | Time | Temperature | ElectricCurent | AmountOfSubstance | LuninusIntensity
-Operations := (*, Times) | (/, Per)
+Operators(Binary) := (*, Times, 1, 1) | (/, Per, 1, -1)
 SelfOps := (<, Lt, bool) | (<=, Let, bool) | (>, Gt, bool) | (>=, Get, bool) | (==, Eq, bool) | (!=, Ne, bool) | (+, Plus, null) | (-, Minus, null) | (*, Times, null) | (/, Per, null)
 Real(Types) := (float, RealFloat)
 
