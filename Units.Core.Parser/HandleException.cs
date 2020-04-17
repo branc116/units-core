@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Units.Core.Parser
 {
@@ -8,12 +6,12 @@ namespace Units.Core.Parser
     public class HandleException : Exception
     {
         public int ErrorCode { get; }
-        public HandleException(string message, int errorCore) : base(message)
+        public HandleException(string message, int errorCore) : base(message.Trim())
         {
             ErrorCode = errorCore;
         }
 
-        public HandleException(string message, Exception innerException, int errorCore) : base(message, innerException)
+        public HandleException(string message, Exception innerException, int errorCore) : base(message.Trim(), innerException)
         {
             ErrorCode = errorCore;
         }

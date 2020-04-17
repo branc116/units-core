@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Linq;
+using Antlr4.Runtime;
 using Units.Core.Parser.State;
-
+#nullable enable
 namespace Units.Core.Parser
 {
     /// <summary>
@@ -65,6 +66,7 @@ namespace Units.Core.Parser
             var i = 0;
             foreach (var line in lines)
             {
+
                 i++;
                 var s = line;
                 var handler = handlers.FirstOrDefault(j => j.MatchRegex(state).IsMatch(s));
@@ -80,15 +82,47 @@ namespace Units.Core.Parser
                 catch (HandleException hx)
                 {
                     Console.WriteLine($"[line {i}][error #{hx.ErrorCode}]: {hx.Message}\n    {line}");
+                    throw;
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine($"Error on line {i}: {ex}");
                 }
             }
-            state.Units.Remove(new Scalar());
             return state;
         }
-
+        public static ParserState ParseGrammar(ICharStream stream)
+        {
+            var state = new ParserState()
+            {
+                Exporter = new MockExportHandle()
+            };
+            var lexer = new UnitsGrammarLexer(stream);
+            var tokens = new Antlr4.Runtime.CommonTokenStream(lexer);
+            var parser = new UnitsGrammarParser(tokens)
+            {
+                BuildParseTree = true
+            };
+            parser.AddParseListener(new SemanticUnitsListener(state));
+            try
+            {
+                Antlr4.Runtime.Tree.IParseTree tree = parser.prog();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error on line {parser.CurrentToken.Line}: {ex.Message}");
+            }
+            return state;
+        }
+        public static ParserState ParseGrammarString(string input)
+        {
+            var stream = Antlr4.Runtime.CharStreams.fromstring(input);
+            return ParseGrammar(stream);
+        }
+        public static ParserState PaseGramarFile(string input)
+        {
+            var stream = Antlr4.Runtime.CharStreams.fromPath(input, System.Text.Encoding.UTF8);
+            return ParseGrammar(stream);
+        }
     }
 }
