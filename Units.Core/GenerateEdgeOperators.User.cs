@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 
 namespace Units.Core
@@ -10,7 +8,7 @@ namespace Units.Core
     public partial class GenerateEdgeOperators
     {
         public IUnit Unit1 { get; set; }
-        public IEnumerable<(Operator Operator, IUnit Unit2, IUnit Res)> Edges{ get; set; }
+        public IEnumerable<(Operator Operator, IUnit Unit2, IUnit Res)> Edges { get; set; }
         public bool Valid { get; } = false;
 
         public GenerateEdgeOperators(ParserState state, IUnit forUnit)
