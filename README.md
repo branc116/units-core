@@ -45,8 +45,7 @@ Unit(Force) := newton(i, N)
 
 ### Use generated struct to help you keep track of the units you defined
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/ZIIJ2v_PZC0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
+[![useCase](https://i.postimg.cc/cJRzKVHq/Units-Show-Case-1.gif)](https://www.youtube.com/embed/ZIIJ2v_PZC0)
 
 ### Comparison with [UnitsNet](https://github.com/angularsen/UnitsNet)
 
