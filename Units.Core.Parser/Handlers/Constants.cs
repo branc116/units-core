@@ -1,6 +1,4 @@
-﻿using System.Text.RegularExpressions;
-
-namespace Units.Core.Parser.Handlers
+﻿namespace Units.Core.Parser.Handlers
 {
     /// <summary>
     /// Regex constants.

@@ -23,7 +23,7 @@ namespace Units.Core.Parser.Handlers
                     .Groups["unit"]
                     .Captures.ToLinq()
                     .Select(i => i.Value)
-                    .Select(i => new Unit { Name = i });
+                    .Select(i => new Unit(i));
             parserState.Units.UnionWith(a);
             return true;
         }

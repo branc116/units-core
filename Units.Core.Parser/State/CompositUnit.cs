@@ -7,11 +7,18 @@ namespace Units.Core.Parser.State
     /// <summary>
     /// Unit that is Defined by 2 other units and the operator
     /// </summary>
-    public class CompositUnit : Unit, IEquatable<CompositUnit>
+    public class CompositUnit : ReadonlyUnit<CompositUnit>
     {
-        public Unit Unit1 { get; set; } = new Scalar();
-        public Operator Operator { get; set; }
-        public Unit Unit2 { get; set; }
+        public IUnit Unit1 { get; }
+        public Operator Operator { get; }
+        public IUnit Unit2 { get; }
+        public CompositUnit(IUnit unit1, Operator @operator, IUnit unit2, string name) : base(name)
+        {
+            Unit1 = unit1;
+            Operator = @operator;
+            Unit2 = unit2;
+        }
+        public CompositUnit(IUnit unit1, Operator @operator, IUnit unit2) : this(unit1, @operator, unit2, null) { }
         /// <inheritdoc/>
         public override string SiName()
         {
@@ -58,11 +65,11 @@ namespace Units.Core.Parser.State
         /// ----TODO----
         /// 
         /// </remarks>
-        public Unit Simplify()
+        public override IUnit Simplify()
         {
             var dict = GetBaseUnitCount();
             var up = dict.Where(i => i.Value > 0).ToList();
-            Unit unit = null;
+            IUnit unit = null;
             if (up.Any())
             {
                 foreach (var u in up)
@@ -70,17 +77,10 @@ namespace Units.Core.Parser.State
                     for (int i = 0; i < u.Value; i++)
                     {
                         if (unit is null)
-                            unit = new Unit { Name = u.Key.Name };
+                            unit = u.Key;
                         else
                         {
-                            unit = new CompositUnit
-                            {
-                                Name = u.Key.Name,
-                                Operator = new Operator { Name = "Times", Symbol = "*" },
-                                Unit1 = unit.Clone(),
-                                Unit2 = new Unit { Name = u.Key.Name }
-                            };
-                            unit.Name = unit.SiName();
+                            unit = new CompositUnit(unit, Operator.TIMES, u.Key, null).WithSiName();
                         }
 
                     }
@@ -89,53 +89,25 @@ namespace Units.Core.Parser.State
             var down = dict.Where(i => i.Value < 0).ToList();
             if (down.Any())
             {
-                Unit over = null;
+                IUnit over = null;
                 foreach (var u in down)
                 {
                     for (int i = 0; i > u.Value; i--)
                     {
                         if (over is null)
-                            over = new Unit { Name = u.Key.Name };
+                            over = u.Key;
                         else
                         {
-                            over = new CompositUnit
-                            {
-                                Name = u.Key.Name,
-                                Operator = new Operator
-                                {
-                                    Name = "Times",
-                                    Symbol = "*"
-                                },
-                                Unit1 = over.Clone(),
-                                Unit2 = new Unit { Name = u.Key.Name }
-                            };
-                            over.Name = over.SiName();
+                            over = new CompositUnit(over, Operator.TIMES, u.Key, null).WithSiName();
                         }
                     }
                 }
                 unit = unit != null ?
-                    new CompositUnit
-                    {
-                        Name = "over",
-                        Operator = new Operator
-                        {
-                            Name = "Per",
-                            Symbol = "/"
-                        },
-                        Unit1 = unit,
-                        Unit2 = over.Clone()
-                    } :
-                    new CompositUnit
-                    {
-                        Name = "over",
-                        Operator = new Operator { Name = "Per", Symbol = "/" },
-                        Unit1 = new Scalar(),
-                        Unit2 = over.Clone()
-                    };
+                    new CompositUnit(unit, Operator.OVER, over, null) :
+                    new CompositUnit(Scalar.Get, Operator.OVER, over, null);
             }
-            unit = unit ?? new Scalar();
-            unit.Name = unit.SiName();
-            return unit;
+            unit ??= Scalar.Get;
+            return unit.WithSiName();
         }
         /// <summary>
         /// Count the dimensionality for each base unit.
@@ -144,18 +116,18 @@ namespace Units.Core.Parser.State
         /// <remarks>
         /// Needs to be more general. Same as <see cref="Simplify"/>.
         /// </remarks>
-        public Dictionary<Unit, int> GetBaseUnitCount()
+        public Dictionary<IUnit, int> GetBaseUnitCount()
         {
-            var dict = new Dictionary<Unit, int>();
-            var s = new Stack<(Unit, bool)>();
-            s.Push((this, false));
+            var dict = new Dictionary<IUnit, int>();
+            var s = new Stack<(IUnit, double)>();
+            s.Push((this, 1));
             while (s.Count != 0)
             {
-                var (cur, down) = s.Pop();
+                var (cur, count) = s.Pop();
                 if (cur is CompositUnit cu)
                 {
-                    s.Push((cu.Unit1, down));
-                    s.Push((cu.Unit2, cu.Operator.Symbol == "/" ? !down : down));
+                    s.Push((cu.Unit1, cu.Operator.CountLeft.count * count));
+                    s.Push((cu.Unit2, cu.Operator.CountRight.count * count));
                 }
                 else if (cur is Scalar)
                 {
@@ -167,39 +139,15 @@ namespace Units.Core.Parser.State
                     {
                         dict.Add(u, 0);
                     }
-                    dict[u] += down ? -1 : 1;
+                    dict[u] += (int)Math.Round(count);
                 }
             }
             return dict.Where(i => i.Value != 0).ToDictionary(i => i.Key, i => i.Value);
         }
-        public override bool Equals(object obj)
-        {
-            var a = this.Simplify();
-            if (a is CompositUnit)
-                return Equals(obj as CompositUnit);
-            else
-                return a.Equals(obj);
-        }
-
-        public bool Equals(CompositUnit other)
-        {
-            return other != null && this.SiName() == other.SiName();
-        }
-
-        public override int GetHashCode()
-        {
-            return this.SiName().GetHashCode();
-        }
         /// <inheritdoc/>
-        public override Unit Clone()
+        public override IUnit WithSiName()
         {
-            return new CompositUnit
-            {
-                Name = $"{Name}",
-                Operator = new Operator { Name = Operator.Name, Symbol = Operator.Symbol },
-                Unit1 = Unit1,
-                Unit2 = Unit2
-            };
+            return new CompositUnit(Unit1, Operator, Unit2, SiName(true));
         }
         public override string ToString()
         {

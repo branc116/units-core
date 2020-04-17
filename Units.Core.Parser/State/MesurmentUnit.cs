@@ -5,7 +5,7 @@ namespace Units.Core.Parser.State
 {
     public class MesurmentUnit : IEquatable<MesurmentUnit>
     {
-        public Unit For { get; set; }
+        public IUnit For { get; set; }
         public string Name { get; set; }
         public string Derive { get; set; }
         public string Postfix { get; set; }
@@ -18,7 +18,7 @@ namespace Units.Core.Parser.State
         public bool Equals(MesurmentUnit other)
         {
             return other != null &&
-                   EqualityComparer<Unit>.Default.Equals(For, other.For) &&
+                   EqualityComparer<IUnit>.Default.Equals(For, other.For) &&
                    Name == other.Name;
         }
 
