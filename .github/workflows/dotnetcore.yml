@@ -1,0 +1,36 @@
+name: Tests
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [windows-latest]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup Java JDK
+      uses: actions/setup-java@v1.3.0
+      with:
+        java-version: 1.8
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.101
+    - name: Disable telemetry
+      run: setx DOTNET_CLI_TELEMETRY_OPTOUT 1
+    - name: Generate Grammar
+      run: powershell Units.Core.Parser\Grammar\GenerateGrammar.ps1
+    - name: Install dependencies
+      run: dotnet restore
+    - name: Build
+      run: dotnet build --configuration Release --no-restore
+    - name: Test
+      run: dotnet test --no-restore --verbosity normal
