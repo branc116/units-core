@@ -1,5 +1,7 @@
 # Units core
 
+![Tests](https://github.com/branc116/units-core/workflows/Tests/badge.svg)
+
 Define your units and use them to check your code for physical correctnes.
 
 ### Define your own units
