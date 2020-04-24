@@ -9,7 +9,10 @@ on:
 jobs:
   build:
 
-    runs-on: windows
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [windows-latest, ubuntu-latest]
 
     steps:
     - uses: actions/checkout@v2
@@ -17,6 +20,8 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.101
+    - name: Position
+      run: cd Units.Core
     - name: Install dependencies
       run: dotnet restore
     - name: Build
