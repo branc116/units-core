@@ -26,7 +26,7 @@ namespace Numbers.<#= r.WrapName #>s {
         public static implicit operator <#=  r.WrapName #>(<#= r.ClrName #> raw) => new <#= r.WrapName #>(raw);
         public static explicit operator <#=  r.ClrName #>(<#= r.WrapName #> raw) => raw._data;
         <# foreach(var meth in SelfOps) { #>
-            public <#= meth.RetType ?? r.WrapName #> Op<#= meth.Name  #>(<#= r.WrapName #> op2) {
+            public <#=  meth.RetType ?? r.WrapName #> Op<#= meth.Name  #>(<#= r.WrapName #> op2) {
                 return _data <#=  meth.Symbol #> op2._data;
             }
             public static <#=  meth.RetType ?? r.WrapName #> operator <#=  meth.Symbol #>(<#= r.WrapName #> op1, <#= r.WrapName #> op2) {

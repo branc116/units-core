@@ -36,49 +36,49 @@ namespace Units.Core
             #line hidden
             
             #line 7 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\GenerateEdgeOperators.tt"
- foreach(var op in Edges) { 
+ foreach(var op in Operators) { 
             
             #line default
             #line hidden
             this.Write("    public static ");
             
             #line 8 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\GenerateEdgeOperators.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(op.Res.Name));
+            this.Write(this.ToStringHelper.ToStringWithCulture(op.returnType));
             
             #line default
             #line hidden
-            this.Write(" operator ");
+            this.Write(" ");
             
             #line 8 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\GenerateEdgeOperators.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(op.Operator.Symbol));
+            this.Write(this.ToStringHelper.ToStringWithCulture(op.method));
             
             #line default
             #line hidden
             this.Write("(");
             
             #line 8 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\GenerateEdgeOperators.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(Unit1.Name));
+            this.Write(this.ToStringHelper.ToStringWithCulture(op.l));
             
             #line default
             #line hidden
             this.Write(" u1, ");
             
             #line 8 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\GenerateEdgeOperators.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(op.Unit2.Name));
+            this.Write(this.ToStringHelper.ToStringWithCulture(op.r));
             
             #line default
             #line hidden
             this.Write(" u2) =>\r\n        (");
             
             #line 9 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\GenerateEdgeOperators.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(op.Res.Name));
+            this.Write(this.ToStringHelper.ToStringWithCulture(op.returnType));
             
             #line default
             #line hidden
-            this.Write(")(u1.RawValue.Op");
+            this.Write(")(u1.RawValue.");
             
             #line 9 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\GenerateEdgeOperators.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(op.Operator.Name));
+            this.Write(this.ToStringHelper.ToStringWithCulture(op.name));
             
             #line default
             #line hidden

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Units.Core.Parser.State;
 
 namespace Units.Core
@@ -80,22 +81,25 @@ namespace Units.Core
         ///</remarks>
         public string[] Lines { get; set; }
         public ParserState State { get; set; }
-        public Dictionary<IUnit, HashSet<(Operator op, IUnit op2, IUnit res)>> GraphEdges { get; }
+        public Dictionary<IUnit, HashSet<OperatorNodeEdge>> GraphEdges { get; }
         public HashSet<MesurmentUnit> MesurmentUnits { get; }
-        public HashSet<Operator> Operators { get; }
+        public HashSet<IOperator> Operators { get; }
         public HashSet<RealDef> RealDefs { get; }
         public HashSet<SelfOp> SelfOps { get; }
         public HashSet<IUnit> Units { get; }
         public IUnit Scalar => Parser.State.Scalar.Get;
-        public GenerateUnits(string[] lines)
+        public GenerateUnits(ParserState state)
         {
-            Lines = lines;
-            State = Parser.Parser.Parse(lines);
+            State = state;
             GraphEdges = State.GraphEdges;
             MesurmentUnits = State.MesurmentUnits;
             Operators = State.Operators;
             RealDefs = State.RealDefs;
-            SelfOps = State.SelfOps;
+            SelfOps = State.SelfOps.Select(i =>
+            {
+                i.RetType = i.RetType == "null" ? null : i.RetType;
+                return i;
+            }).ToHashSet();
             Units = State.Units;
         }
         public string EdgeOps(IUnit forUnit)
