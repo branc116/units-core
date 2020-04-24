@@ -1,0 +1,27 @@
+name: Publish Documentation
+
+on:
+  repository_dispatch:
+    types: [gen-docs]
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+    - name: Clone docs
+      uses: actions/checkout@v2
+      with: 
+        repository:  branc116/units-core
+        submodules: 1
+    - name: Setup keys
+      run: powershell.exe "Scripts/SetKeys.ps1" "{{ secrets.SSH_PUBLIC }}" "{{ secrets.SSH_PRIVATE }}"
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.101
+    - name: Setup Java JDK
+      uses: actions/setup-java@v1.3.0
+      with:
+        java-version: 1.8
+    - name: Build docs
+      run: powershell.exe "Scripts/PublishDocumentation.ps1";
