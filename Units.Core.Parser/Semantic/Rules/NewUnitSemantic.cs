@@ -14,7 +14,7 @@ namespace Units.Core.Parser.Semantic.Rules
         [Semantic("Unary")]
         public void Handle(string newUnitName, string @operator, string rightUnit)
         {
-            //todo - unary operator
+            _state.AddNewCompositUnit(@operator, rightUnit, newUnitName);
         }
     }
 }

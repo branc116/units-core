@@ -16,7 +16,7 @@
         public override int GetHashCode() => HashCode;
         public override bool Equals(object obj) => Equals(obj as Scalar) || Equals(obj as IUnit);
         public static bool Equals(Scalar sc) => sc is { };
-        public static bool Equals(IUnit unit) => unit.Equals(Get);
+        public static bool Equals(IUnit unit) => unit?.Equals(Get) ?? false;
 
     }
 }

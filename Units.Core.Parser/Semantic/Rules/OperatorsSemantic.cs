@@ -9,17 +9,21 @@ namespace Units.Core.Parser.Semantic.Rules
         [Semantic("Binary")]
         public void HandleBinary(string symbol, string name, string leftCount, string rightCount)
         {
-            var op = new Operator(name, symbol)
+            var op = new BinaryOperator(name, symbol)
             {
-                CountLeft = double.TryParse(leftCount, out var d) ? (d, default) : (double.Parse(leftCount[0..^1]), leftCount[^1]),
-                CountRight = double.TryParse(rightCount, out var d1) ? (d1, default) : (double.Parse(rightCount[0..^1]), rightCount[^1])
+                CountLeft = double.TryParse(leftCount, out var d) ? (d, (char?)null) : (double.Parse(leftCount[0..^1]), leftCount[^1]),
+                CountRight = double.TryParse(rightCount, out var d1) ? (d1, (char?)null) : (double.Parse(rightCount[0..^1]), rightCount[^1])
             };
             _state.Operators.Add(op);
         }
         [Semantic("Unary")]
         public void HandleUnary(string name, string rightCount)
         {
-            //TODO
+            var @operator = new UnaryOperator(name, name)
+            {
+                Count = double.TryParse(rightCount, out var d) ? (d, (char?)null) : (double.Parse(rightCount[0..^1]), rightCount[^1])
+            };
+            _state.Operators.Add(@operator);
         }
         [Semantic("Self")]
         public void Handle(string symbol, string name, string retName)

@@ -1,7 +1,7 @@
 ﻿using System;
 namespace Units.Core.Parser.State
 {
-    public abstract class ReadonlyUnit<T> : IUnit<T>, IEquatable<ReadonlyUnit<T>> where T : ReadonlyUnit<T>
+    public abstract class ReadonlyUnit<T> : IUnit<T>, IReadonlyUnit, IEquatable<ReadonlyUnit<T>> where T : ReadonlyUnit<T>
     {
         private IUnit _simplifyed;
         private string _siName;

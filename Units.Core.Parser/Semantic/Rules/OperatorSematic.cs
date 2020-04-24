@@ -13,8 +13,20 @@ namespace Units.Core.Parser.Semantic.Rules
         public void Handle(string @for, Dictionary<char, int> order, List<OperatorDef_Binary> binaries, List<OperatorDef_Unary> unaries)
         {
             var op = _state.GetOperator(@for);
-            op.InferedOperations = binaries
-                .Select(i => (order[i.Left], _state.GetOperator(i.Symbol.ToString()), order[i.Right], order[i.Res])).ToList();
+            var infers = binaries
+                .Select(i => (
+                    res: order[i.Res],
+                    op: _state.GetOperator(i.Symbol.ToString()),
+                    operands: new[] { order[i.Left], order[i.Right] }
+                )).Union(unaries.Select(i => (
+                    res: order[i.Res],
+                    op: _state.GetOperator(i.Operator),
+                    operands: new[] { order[i.Res] }
+                ))).ToList();
+            foreach (var infer in infers)
+            {
+                op.AddInferedOperatorion(infer.res, infer.op, infer.operands);
+            }
         }
     }
 }
