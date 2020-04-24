@@ -7,7 +7,6 @@ on:
     branches: [ master ]
 
 jobs:
-  intallJava:
   build:
 
     runs-on: ${{ matrix.os }}
