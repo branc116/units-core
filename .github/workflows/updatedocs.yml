@@ -8,13 +8,19 @@ jobs:
   build:
     runs-on: windows-latest
     steps:
-    - name: Clone docs
+    - name: clone
       uses: actions/checkout@v2
       with: 
-        repository:  branc116/units-core
+        repository:  branc116/units-core-docfx
         submodules: 1
+    - name: SetKeysPriv
+      run: $a = [System.Environment]::SetEnvironmentVariable("Priv", "${{ secrets.SSH_PRIVATE }}", [System.EnvironmentVariableTarget]::User)
+      shell: powershell
+    - name: SetKeysPub
+      run: $b = [System.Environment]::SetEnvironmentVariable("Pub", "${{ secrets.SSH_PUBLIC }}", [System.EnvironmentVariableTarget]::User)
+      shell: powershell
     - name: Setup keys
-      run: powershell.exe "Scripts/SetKeys.ps1" "{{ secrets.SSH_PUBLIC }}" "{{ secrets.SSH_PRIVATE }}"
+      run: powershell .\Scripts\SetKeys.ps1
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
@@ -24,4 +30,4 @@ jobs:
       with:
         java-version: 1.8
     - name: Build docs
-      run: powershell.exe "Scripts/PublishDocumentation.ps1";
+      run: powershell .\Scripts\PublishDocumentation.ps1
