@@ -3,9 +3,22 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Authors>Branimir Ričko</Authors>
+    <Description>Tool for generating types for handiling units.</Description>
+    <Copyright>Branimir Ričko</Copyright>
+    <PackageProjectUrl>https://branc116.github.io/units-core-docfx</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/branc116/units-core</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <NeutralLanguage>English</NeutralLanguage>
+    <PackageTags>Units</PackageTags>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+    <PackAsTool>true</PackAsTool>
+    <ToolCommandName>units</ToolCommandName>
+    <Version>1.0.0</Version>
   </PropertyGroup>
-
   <ItemGroup>
+    <PackageReference Include="CommandLineParser" Version="2.7.82" />
     <PackageReference Include="System.CodeDom" Version="4.7.0" />
   </ItemGroup>
 
@@ -14,13 +27,25 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="GenerateEdgeOperators.tt">
+    <None Update="Generators\GenerateEdgeOperators.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>GenerateEdgeOperators.cs</LastGenOutput>
     </None>
-    <None Update="GenerateUnits.tt">
+    <None Update="Generators\GenerateUnits.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>GenerateUnits.cs</LastGenOutput>
+    </None>
+    <None Update="Generators\GenerateUnit.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>GenerateUnit.cs</LastGenOutput>
+    </None>
+    <None Update="Generators\GenerateWrappers.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>GenerateWrappers.cs</LastGenOutput>
+    </None>
+    <None Include="..\LICENSE.md">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
     </None>
   </ItemGroup>
 
@@ -29,15 +54,25 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="GenerateEdgeOperators.cs">
+    <Compile Update="Generators\GenerateEdgeOperators.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>GenerateEdgeOperators.tt</DependentUpon>
     </Compile>
-    <Compile Update="GenerateUnits.cs">
+    <Compile Update="Generators\GenerateUnits.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>GenerateUnits.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Generators\GenerateUnit.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>GenerateUnit.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Generators\GenerateWrappers.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>GenerateWrappers.tt</DependentUpon>
     </Compile>
   </ItemGroup>
 
