@@ -1,11 +1,11 @@
-name: Tests
+name: Nuget Publish
 
 on:
   repository_dispatch:
     types: [pub-nuget]
 
 jobs:
-  build:
+  NugetPublish:
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v2

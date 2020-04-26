@@ -5,7 +5,7 @@ on:
     types: [gen-docs]
 
 jobs:
-  build:
+  PublishDocs:
     runs-on: windows-latest
     steps:
     - name: clone
