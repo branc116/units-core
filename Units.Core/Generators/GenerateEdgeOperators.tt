@@ -6,5 +6,5 @@
 <#  if (!Valid)return ""; #>
 <# foreach(var op in Operators) { #>
     public static <#= op.returnType #> <#= op.method#>(<#= op.l #> u1, <#= op.r #> u2) =>
-        (<#=  op.returnType #>)(u1.RawValue.<#= op.name #>((Scalar)u2));
+        (<#=  op.returnType #>)((Scalar)u1).<#= op.name #>((Scalar)u2);
 <# } #>

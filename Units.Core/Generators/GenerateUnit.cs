@@ -7,7 +7,7 @@
 //     the code is regenerated.
 // </auto-generated>
 // ------------------------------------------------------------------------------
-namespace Units.Core
+namespace Units.Core.Generators
 {
     using System.Linq;
     using System.Text;
@@ -18,9 +18,9 @@ namespace Units.Core
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\GenerateEdgeOperators.tt"
+    #line 1 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateUnit.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "16.0.0.0")]
-    public partial class GenerateEdgeOperators : GenerateEdgeOperatorsBase
+    public partial class GenerateUnit : GenerateUnitBase
     {
 #line hidden
         /// <summary>
@@ -28,67 +28,211 @@ namespace Units.Core
         /// </summary>
         public virtual string TransformText()
         {
+            this.Write("\r\nnamespace ");
             
-            #line 6 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\GenerateEdgeOperators.tt"
-  if (!Valid)return ""; 
-            
-            #line default
-            #line hidden
-            
-            #line 7 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\GenerateEdgeOperators.tt"
- foreach(var op in Operators) { 
+            #line 7 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateUnit.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Namespace()));
             
             #line default
             #line hidden
-            this.Write("    public static ");
+            this.Write(" {\r\n    ");
             
-            #line 8 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\GenerateEdgeOperators.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(op.returnType));
+            #line 8 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateUnit.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Usings()));
             
             #line default
             #line hidden
-            this.Write(" ");
+            this.Write("\r\n    public readonly struct ");
             
-            #line 8 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\GenerateEdgeOperators.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(op.method));
+            #line 9 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateUnit.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Unit.Name));
+            
+            #line default
+            #line hidden
+            this.Write(": IEquatable<");
+            
+            #line 9 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateUnit.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Unit.Name));
+            
+            #line default
+            #line hidden
+            this.Write("> {\r\n        public readonly Scalar RawValue;\r\n        public ");
+            
+            #line 11 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateUnit.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Unit.Name));
+            
+            #line default
+            #line hidden
+            this.Write("(Scalar value) {\r\n            RawValue = value;\r\n        }\r\n        ");
+            
+            #line 14 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateUnit.tt"
+ foreach(var meth in SelfOps.Where(i => i.Symbol != "*" && i.Symbol != "/")) { 
+            
+            #line default
+            #line hidden
+            this.Write("            public static ");
+            
+            #line 15 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateUnit.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(meth.RetType ?? Unit.Name));
+            
+            #line default
+            #line hidden
+            this.Write(" operator ");
+            
+            #line 15 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateUnit.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(meth.Symbol));
             
             #line default
             #line hidden
             this.Write("(");
             
-            #line 8 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\GenerateEdgeOperators.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(op.l));
+            #line 15 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateUnit.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Unit.Name));
             
             #line default
             #line hidden
-            this.Write(" u1, ");
+            this.Write(" op1, ");
             
-            #line 8 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\GenerateEdgeOperators.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(op.r));
-            
-            #line default
-            #line hidden
-            this.Write(" u2) =>\r\n        (");
-            
-            #line 9 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\GenerateEdgeOperators.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(op.returnType));
+            #line 15 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateUnit.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Unit.Name));
             
             #line default
             #line hidden
-            this.Write(")(u1.RawValue.");
+            this.Write(" op2) =>\r\n                ");
             
-            #line 9 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\GenerateEdgeOperators.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(op.name));
-            
-            #line default
-            #line hidden
-            this.Write("((Scalar)u2));\r\n");
-            
-            #line 10 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\GenerateEdgeOperators.tt"
- } 
+            #line 16 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateUnit.tt"
+  if (meth.RetType == null) { 
             
             #line default
             #line hidden
+            this.Write("                new ");
+            
+            #line 17 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateUnit.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Unit.Name));
+            
+            #line default
+            #line hidden
+            this.Write("(op1.RawValue.Op");
+            
+            #line 17 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateUnit.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(meth.Name));
+            
+            #line default
+            #line hidden
+            this.Write("(op2.RawValue));\r\n                ");
+            
+            #line 18 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateUnit.tt"
+  } else { 
+            
+            #line default
+            #line hidden
+            this.Write("                ((Scalar)op1).Op");
+            
+            #line 19 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateUnit.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(meth.Name));
+            
+            #line default
+            #line hidden
+            this.Write("((Scalar)op2);\r\n                ");
+            
+            #line 20 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateUnit.tt"
+  } 
+            
+            #line default
+            #line hidden
+            this.Write("        ");
+            
+            #line 21 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateUnit.tt"
+  } 
+            
+            #line default
+            #line hidden
+            this.Write("        ");
+            
+            #line 22 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateUnit.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(EdgeOps(Unit)));
+            
+            #line default
+            #line hidden
+            this.Write("\r\n\r\n        public static explicit operator ");
+            
+            #line 24 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateUnit.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Unit.Name));
+            
+            #line default
+            #line hidden
+            this.Write("(");
+            
+            #line 24 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateUnit.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Real.ClrName));
+            
+            #line default
+            #line hidden
+            this.Write(" from) => new ");
+            
+            #line 24 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateUnit.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Unit.Name));
+            
+            #line default
+            #line hidden
+            this.Write("(from);\r\n        public static explicit operator ");
+            
+            #line 25 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateUnit.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Unit.Name));
+            
+            #line default
+            #line hidden
+            this.Write("(Scalar from) => new ");
+            
+            #line 25 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateUnit.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Unit.Name));
+            
+            #line default
+            #line hidden
+            this.Write("(from);\r\n        public static explicit operator Scalar(");
+            
+            #line 26 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateUnit.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Unit.Name));
+            
+            #line default
+            #line hidden
+            this.Write(" from) => from.RawValue;\r\n        public static explicit operator ");
+            
+            #line 27 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateUnit.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Real.ClrName));
+            
+            #line default
+            #line hidden
+            this.Write("(");
+            
+            #line 27 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateUnit.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Unit.Name));
+            
+            #line default
+            #line hidden
+            this.Write(" from) => (");
+            
+            #line 27 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateUnit.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Real.ClrName));
+            
+            #line default
+            #line hidden
+            this.Write(")from.RawValue;\r\n        public override bool Equals(object obj) => obj is ");
+            
+            #line 28 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateUnit.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Unit.Name));
+            
+            #line default
+            #line hidden
+            this.Write(" ut && this.Equals(ut);\r\n        public bool Equals(");
+            
+            #line 29 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateUnit.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(Unit.Name));
+            
+            #line default
+            #line hidden
+            this.Write(" other) => true; //return other != null && this == other;\r\n        public overrid" +
+                    "e int GetHashCode() => RawValue.GetHashCode();\r\n    }\r\n}");
             return this.GenerationEnvironment.ToString();
         }
     }
@@ -100,7 +244,7 @@ namespace Units.Core
     /// Base class for this transformation
     /// </summary>
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "16.0.0.0")]
-    public class GenerateEdgeOperatorsBase
+    public class GenerateUnitBase
     {
         #region Fields
         private global::System.Text.StringBuilder generationEnvironmentField;

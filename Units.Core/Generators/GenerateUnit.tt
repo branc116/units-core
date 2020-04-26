@@ -1,0 +1,32 @@
+﻿<#@ template language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+
+namespace <#= Namespace() #> {
+    <#=  Usings() #>
+    public readonly struct <#= Unit.Name  #>: IEquatable<<#= Unit.Name  #>> {
+        public readonly Scalar RawValue;
+        public <#=  Unit.Name #>(Scalar value) {
+            RawValue = value;
+        }
+        <# foreach(var meth in SelfOps.Where(i => i.Symbol != "*" && i.Symbol != "/")) { #>
+            public static <#=  meth.RetType ?? Unit.Name #> operator <#=  meth.Symbol #>(<#= Unit.Name #> op1, <#= Unit.Name #> op2) =>
+                <#  if (meth.RetType == null) { #>
+                new <#=  Unit.Name #>(op1.RawValue.Op<#=  meth.Name #>(op2.RawValue));
+                <#  } else { #>
+                ((Scalar)op1).Op<#=  meth.Name #>((Scalar)op2);
+                <#  } #>
+        <#  } #>
+        <#=  EdgeOps(Unit) #>
+
+        public static explicit operator <#= Unit.Name #>(<#= Real.ClrName #> from) => new <#= Unit.Name #>(from);
+        public static explicit operator <#= Unit.Name #>(Scalar from) => new <#=  Unit.Name #>(from);
+        public static explicit operator Scalar(<#= Unit.Name #> from) => from.RawValue;
+        public static explicit operator <#= Real.ClrName #>(<#= Unit.Name #> from) => (<#= Real.ClrName #>)from.RawValue;
+        public override bool Equals(object obj) => obj is <#= Unit.Name  #> ut && this.Equals(ut);
+        public bool Equals(<#= Unit.Name #> other) => true; //return other != null && this == other;
+        public override int GetHashCode() => RawValue.GetHashCode();
+    }
+}

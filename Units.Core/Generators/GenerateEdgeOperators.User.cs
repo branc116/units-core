@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 
 
-namespace Units.Core
+namespace Units.Core.Generators
 {
     using System.Linq;
     using Units.Core.Parser.State;
@@ -22,7 +22,8 @@ namespace Units.Core
                 .Where(i => i.Operator is BinaryOperator)
                 .Where(i => i.Operator.Symbol == "*" || i.Operator.Symbol == "/")
                 .Where(i => i.Parameters.All(j => state.Units.Contains(j)))
-                .Select(i => (i.Result.Name == "null" ? Unit1.Name : i.Result.Name,
+                .Where(i => state.Units.Contains(i.Result))
+                .Select(i => (i.Result.Name == "null" ? (Unit1.Name) : i.Result.Name,
                     Unit1.Name,
                     $"operator {i.Operator.Symbol}",
                     $"Op{i.Operator.Name}",
