@@ -51,6 +51,7 @@
         /// </remarks>
         string SiName();
         IUnit WithSiName();
+        bool IsInfered { get; }
     }
     public interface IUnit<T> : IUnit where T : IUnit<T>
     {

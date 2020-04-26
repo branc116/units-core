@@ -12,12 +12,13 @@ namespace Units.Core.Parser.State
         public IUnit Unit1 { get; }
         public BinaryOperator Operator { get; }
         public IUnit Unit2 { get; }
-        public BinaryCompositUnit(IUnit unit1, BinaryOperator @operator, IUnit unit2, string name) : base(name)
+        public BinaryCompositUnit(IUnit unit1, BinaryOperator @operator, IUnit unit2, string name, bool isInfered) : base(name, isInfered)
         {
             Unit1 = unit1;
             Operator = @operator;
             Unit2 = unit2;
         }
+        public BinaryCompositUnit(IUnit unit1, BinaryOperator @operator, IUnit unit2, string name) : this(unit1, @operator, unit2, name, false) { }
         public BinaryCompositUnit(IUnit unit1, BinaryOperator @operator, IUnit unit2) : this(unit1, @operator, unit2, null) { }
         /// <inheritdoc/>
         public override string SiName()
@@ -86,7 +87,7 @@ namespace Units.Core.Parser.State
                             unit = u.Key;
                         else
                         {
-                            unit = new BinaryCompositUnit(unit, BinaryOperator.TIMES, u.Key, null).WithSiName();
+                            unit = new BinaryCompositUnit(unit, BinaryOperator.TIMES, u.Key, null, IsInfered).WithSiName();
                         }
                     }
                 }
@@ -103,13 +104,13 @@ namespace Units.Core.Parser.State
                             over = u.Key;
                         else
                         {
-                            over = new BinaryCompositUnit(over, BinaryOperator.TIMES, u.Key, null).WithSiName();
+                            over = new BinaryCompositUnit(over, BinaryOperator.TIMES, u.Key, null, IsInfered).WithSiName();
                         }
                     }
                 }
                 unit = unit != null ?
-                    new BinaryCompositUnit(unit, BinaryOperator.OVER, over, null) :
-                    new BinaryCompositUnit(Scalar.Get, BinaryOperator.OVER, over, null);
+                    new BinaryCompositUnit(unit, BinaryOperator.OVER, over, null, IsInfered) :
+                    new BinaryCompositUnit(Scalar.Get, BinaryOperator.OVER, over, null, IsInfered);
             }
             unit ??= Scalar.Get;
             return unit.WithSiName();

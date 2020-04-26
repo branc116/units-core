@@ -10,9 +10,17 @@ namespace Units.Core.Parser.State
         /// Name of the unit
         /// </summary>
         public string Name { get; }
-        protected ReadonlyUnit(string name)
+
+        public bool IsInfered { get; }
+
+        protected ReadonlyUnit(string name) : this(name, false)
+        {
+            
+        }
+        protected ReadonlyUnit(string name, bool isInferd)
         {
             Name = name;
+            IsInfered = isInferd;
         }
         public IUnit Simplify(bool cache) => cache ?
             _simplifyed ??= Simplify() :

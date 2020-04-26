@@ -6,9 +6,22 @@ using System.Reflection;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Units.Core.Parser;
 
 namespace Units.Core.Tests
 {
+    public sealed class CompileException : System.Exception
+    {
+        public int LineNum { get; set; }
+        public CompileException(string message, int lineNum) : base(message)
+        {
+            LineNum = lineNum;
+        }
+
+        public CompileException(string message, Exception innerException) : base(message, innerException)
+        {
+        }
+    }
     public static class Helpers
     {
         public static IEnumerable<PortableExecutableReference> GetAllReferences()
@@ -22,7 +35,7 @@ namespace Units.Core.Tests
         public static Assembly ToAssembly(this string source, bool injectMain = true)
         {
             var refs = GetAllReferences().ToList();
-            var arr = injectMain ? new[] { SyntaxFactory.ParseSyntaxTree(source), SyntaxFactory.ParseSyntaxTree(@"
+            var arr = injectMain ? new[] { SyntaxFactory.ParseSyntaxTree(source + @"
 namespace DontWorryAboutIt {
     public static class ReallyDontWorryAboutIt {
         public static void Main(string[] args) { return; }
@@ -32,7 +45,10 @@ namespace DontWorryAboutIt {
             using var ms = new MemoryStream();
             var er = comp.Emit(ms);
             if (!er.Success)
-                throw new Exception(er.Diagnostics.Select(i => i.ToString()).Aggregate((i, j) => $"{i}{System.Environment.NewLine}"));
+                throw new CompileException(er.Diagnostics.Select(i => i.ToString())
+                    .Aggregate((i, j) => $"{i}{System.Environment.NewLine}{j}"), 
+                    er.Diagnostics
+                        .Select(i => i.Location.SourceSpan.Start).FirstOrDefault());
             var val = System.Reflection.Assembly.Load(ms.ToArray());
             return val;
         }
@@ -40,10 +56,16 @@ namespace DontWorryAboutIt {
         {
             //var lines = source.Split(System.Environment.NewLine);
             var state = Parser.Parser.ParseGrammarString(source);
-            var generator = new Units.Core.GenerateUnits(state);
+            var generator = new Units.Core.Generators.GenerateUnits(state);
             var csharpSource = generator.TransformText();
-            var assembly = csharpSource.ToAssembly();
-            return assembly;
+            try
+            {
+                var assembly = csharpSource.ToAssembly();
+                return assembly;
+            }catch(CompileException ex)
+            {
+                throw new Exception(csharpSource.AddLineNumbers(ex.LineNum > 100 ? ex.LineNum - 100 : 0, 200), ex);
+            }
         }
         public static dynamic DinamicCast(this object from, Type to)
         {
@@ -64,6 +86,15 @@ namespace DontWorryAboutIt {
         public static Type GetUnit(this Assembly from, string name)
         {
             return from.GetTypes().FirstOrDefault(i => i.Name == name);
+        }
+        public static string AddLineNumbers(this string str, int skip, int take)
+        {
+            var text = str.Split(Environment.NewLine)
+                .Take(take + 1)
+                .ToIndexed()
+                .Select(i => $"{i.index + skip}> {i.value}")
+                .Aggregate((i, j) => $"{i}{Environment.NewLine}{j}");
+            return text;
         }
     }
 }

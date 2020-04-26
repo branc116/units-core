@@ -4,7 +4,7 @@
     {
         public IUnit Unit { get; }
         public UnaryOperator UnaryOperator { get; }
-        public UnaryCompositUnit(IUnit unit, UnaryOperator unaryOperator, string name) : base(name)
+        public UnaryCompositUnit(IUnit unit, UnaryOperator unaryOperator, string name, bool isInfred = false) : base(name, isInfred)
         {
             UnaryOperator = unaryOperator;
             Unit = unit.Simplify();

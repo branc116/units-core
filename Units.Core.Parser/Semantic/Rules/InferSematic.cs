@@ -18,7 +18,7 @@ namespace Units.Core.Parser.Semantic.Rules
                 .Join(operators, i => true, i => true, (us, ops) => (us.left, ops, us.right));
             foreach (var (left, op, right) in newUnits)
             {
-                state.AddNewCompositUnit(left, op, right);
+                state.AddNewCompositUnit(left, op, right, true);
             }
         }
     }

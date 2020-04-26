@@ -1,4 +1,6 @@
-﻿namespace Units.Core.Sample
+﻿using Units.Core.Generators;
+
+namespace Units.Core.Sample
 {
     class Program
     {
@@ -21,7 +23,6 @@ Force := Mass * Acceleration
 Pressure := Force / Area
 Energy := Force * Length
 
-!Infer
 !Infer
 
 Unit(Mass) := (gram, i, g)

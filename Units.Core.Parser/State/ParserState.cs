@@ -49,12 +49,14 @@ namespace Units.Core.Parser.State
             Units.Add(unit);
             AddEdges(op, unit, right);
         }
-        public void AddNewCompositUnit(IUnit left, IOperator @operator, IUnit right)
+        public void AddNewCompositUnit(IUnit left, IOperator @operator, IUnit right, bool isInfered = false)
         {
             if (@operator is BinaryOperator opb)
             {
-                var unit = new BinaryCompositUnit(left, opb, right).Simplify();
-                Units.Add(unit);
+                var tmp = new BinaryCompositUnit(left, opb, right, null, isInfered);
+                var (unit, depth) = Helpers.ShortestUnit(tmp, this);
+                if (!Units.Add(unit))
+                    unit = Units.FirstOrDefault(i => i.Equals(unit));
                 AddEdges(@operator, unit, left, right);
             }
             else

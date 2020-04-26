@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Units.Core.Parser.State;
@@ -49,7 +50,9 @@ namespace Units.Core.Parser
         {
             //var dict = compositUnit.GetNamedBaseUnitsCount();
             var curString = string.Empty;
-            var onlyBase = state.Units.Where(i => i is Unit).ToList();
+            var onlyBase = state.Units.Where(i => i is Unit)
+                .Where(i => compositUnit.SiName(true).Contains(i.Name))
+                .ToList();
             var start = onlyBase
                 .Select(i => (i, 0))
                 .Append((Scalar.Get, 0));
@@ -81,7 +84,7 @@ namespace Units.Core.Parser
                         {
                             if (visitedB.Contains((cur.unit, unit, op)))
                                 continue;
-                            var newUnit = new BinaryCompositUnit(cur.unit, bo, unit);
+                            var newUnit = new BinaryCompositUnit(cur.unit, bo, unit, null, true);
                             visitedB.Add((cur.unit, unit, bo));
                             if (visited.Contains(newUnit))
                                 continue;
@@ -91,7 +94,19 @@ namespace Units.Core.Parser
                     }
                 }
             }
-            return cur;
+            var ret = (MakeItNice(state, cur.unit), cur.depth);
+            return ret;
+        }
+        public static IUnit MakeItNice(ParserState state, IUnit unit)
+        {
+            if (unit is BinaryCompositUnit bcu) {
+                return new BinaryCompositUnit(bcu.Unit1, 
+                    bcu.Operator,
+                    bcu.Unit2,
+                    bcu.SiName(),
+                    bcu.IsInfered);
+            }
+            return unit;
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Units.Core.Parser.State
 {
@@ -23,23 +24,28 @@ namespace Units.Core.Parser.State
         public bool Equals(OperatorNodeEdge other)
         {
             var res = other != null &&
-                   EqualityComparer<IOperator>.Default.Equals(Operator, other.Operator) &&
-                   EqualityComparer<IUnit>.Default.Equals(Result, other.Result) &&
+                   Operator.Equals(other.Operator) &&
+                   Result.Equals(other.Result) &&
                    other.Parameters.Length == Parameters.Length;
             if (!res)
                 return false;
             for (int i = 0; i < Parameters.Length; ++i)
             {
-                res &= Parameters[i].Equals(other.Parameters[i]);
+                res = Parameters[i].Equals(other.Parameters[i]);
                 if (!res)
                     return res;
             }
             return true;
         }
-
+        private int? _hashCode = null;
         public override int GetHashCode()
         {
-            return HashCode.Combine(Operator, Parameters, Result);
+
+            return _hashCode ??= Parameters.Any(i => i is IUnit) ?
+                 HashCode.Combine(Operator, Parameters.Where(i => i is IUnit).Select(i => i.GetHashCode()).Aggregate((i, j) => i ^ j), Result) :
+                 HashCode.Combine(Operator, Result)
+                 ;
+
         }
     }
 }

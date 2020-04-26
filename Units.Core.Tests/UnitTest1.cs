@@ -37,6 +37,7 @@ Real(Types) := (float, RealFloat)";
         [TestMethod]
         public void TestOperators()
         {
+
             var source = @"
 Real(Types) := (float, RealFloat)
 Operators(Self) := (*, Times, null)";
@@ -95,6 +96,13 @@ Operators(Binary) := (*, Times, 1, 1) | (/, Per, 1, -1)
                 Assert.AreEqual(num / num, (float)(instance / instance));
                 Assert.IsInstanceOfType(instance / instance, assemby.GetUnit($"RealFloat"));
             }
+        }
+        [TestMethod]
+        public void TestInitDefinitino()
+        {
+            var src = Units.Core.CommandLineOptions.Init.FullSiStandard;
+            var assebly = src.UnitsToAssembly();
+
         }
     }
 }

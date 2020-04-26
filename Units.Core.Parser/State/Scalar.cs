@@ -8,6 +8,9 @@
         public static Scalar Get = new Scalar();
         private static int HashCode => Get.Name.GetHashCode();
         public string Name => "Scalar";
+
+        public bool IsInfered => false;
+
         private Scalar() { }
         public IUnit Simplify() => this;
         public string SiName() => Name;

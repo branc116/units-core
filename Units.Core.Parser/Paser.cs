@@ -10,11 +10,11 @@ namespace Units.Core.Parser
     public static class Parser
     {
 
-        private static ParserState ParseGrammar(ICharStream stream)
+        private static ParserState ParseGrammar(ICharStream stream, IExportHandle? export)
         {
             var state = new ParserState()
             {
-                Exporter = new MockExportHandle()
+                Exporter = export ?? new MockExportHandle()
             };
             var lexer = new UnitsGrammarLexer(stream);
             var tokens = new Antlr4.Runtime.CommonTokenStream(lexer);
@@ -38,6 +38,10 @@ namespace Units.Core.Parser
                 throw;
             }
             return state;
+        }
+        private static ParserState ParseGrammar(ICharStream stream)
+        {
+            return ParseGrammar(stream, default);
         }
         /// <summary>
         /// Given the <paramref name="lines"/> this method will handle
@@ -88,10 +92,10 @@ namespace Units.Core.Parser
         ///
         ///that can be converted to c# core -maybe code of other languages.
         /// </remarks>
-        public static ParserState ParseGrammarString(string input)
+        public static ParserState ParseGrammarString(string input, IExportHandle? export = default)
         {
             var stream = Antlr4.Runtime.CharStreams.fromstring(input);
-            return ParseGrammar(stream);
+            return ParseGrammar(stream, export);
         }
         /// <summary>
         /// Given the <paramref name="input"/> this method will handle
@@ -142,10 +146,10 @@ namespace Units.Core.Parser
         ///
         ///that can be converted to c# core -maybe code of other languages.
         /// </remarks>
-        public static ParserState PaseGramarFile(string input)
+        public static ParserState PaseGramarFile(string input, IExportHandle? exportHandle = default)
         {
             var stream = Antlr4.Runtime.CharStreams.fromPath(input, System.Text.Encoding.UTF8);
-            return ParseGrammar(stream);
+            return ParseGrammar(stream, exportHandle);
         }
     }
 }
