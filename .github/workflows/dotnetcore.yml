@@ -25,7 +25,8 @@ jobs:
       with:
         dotnet-version: 3.1.101
     - name: Disable telemetry
-      run: setx DOTNET_CLI_TELEMETRY_OPTOUT 1
+      run: ([System.Environment]::SetEnvironmentVariable("DOTNET_CLI_TELEMETRY_OPTOUT", "1", [System.EnvironmentVariableTarget]::User))
+      shell: powershell
     - name: Generate Grammar
       run: powershell Units.Core.Parser\Grammar\GenerateGrammar.ps1
     - name: Install dependencies
@@ -34,19 +35,16 @@ jobs:
       run: dotnet build --configuration Release --no-restore
     - name: Test
       run: dotnet test --no-restore --verbosity normal
-    - name: Publish NuGet
-      uses: rohith/publish-nuget@v2.3.0
-      with:
-        # Filepath of the project to be packaged, relative to root of repository
-        PROJECT_FILE_PATH: Units.Core
-        # Filepath containing version info, relative to root of repository
-        VERSION_FILE_PATH: Units.Core/Units.Core.csproj
-        # API key for the NuGet feed
-        NUGET_KEY: ${{ secrets.NUGET_KEY }}
     - name: Documentation-Generation
       uses: peter-evans/repository-dispatch@v1
       with:
         token: ${{ secrets.TOKEN }}
         event-type: gen-docs
+        repository: branc116/units-core
+    - name: Nuget-Publish
+      uses: peter-evans/repository-dispatch@v1
+      with:
+        token: ${{ secrets.TOKEN }}
+        event-type: pub-nuget
         repository: branc116/units-core
 
