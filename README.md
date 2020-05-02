@@ -1,6 +1,8 @@
 # Units core
 
 ![Tests](https://github.com/branc116/units-core/workflows/Tests/badge.svg)
+![Nuget Publish](https://github.com/branc116/units-core/workflows/Nuget%20Publish/badge.svg)
+![Publish Documentation](https://github.com/branc116/units-core/workflows/Publish%20Documentation/badge.svg)
 
 Define your units and use them to check your code for physical correctnes.
 

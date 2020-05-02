@@ -6,8 +6,10 @@
 **/.vscode
 **/*csproj.user
 Units.Core.Parser/Grammar/.bin
+Units.Core.Parser/Metadata/.bin
 Units.Core.Parser/Grammar/.antlr
 Units.Core.Parser/Grammar/*.cs
 Units.Core.Parser/Grammar/*.interp
 Units.Core.Parser/Grammar/*.tokens
 /Units.Core.Parser/Grammar/test.txt
+/Units.Core.Parser/Metadata/UnitsNetAllunits.g.cs

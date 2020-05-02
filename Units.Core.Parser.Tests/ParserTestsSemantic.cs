@@ -28,7 +28,7 @@ Force := Mass * Acceleration
 Pressure := Force / Area
 Energy := Force * Length
 
-Infer
+!Infer Slow
 
 Unit(Mass) := (gram, i, g)
 Unit(Length) := (meter, i, m)
@@ -88,7 +88,7 @@ Force := Mass * Acceleration
 Pressure := Force / Area
 Energy := Force * Length
 
-Infer
+!Infer Slow
 
 Unit(Mass) := (gram, i, g)
 Unit(Length) := (meter, i, m)

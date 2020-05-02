@@ -60,7 +60,7 @@ Units(Base) := Mass | Length
 Real(Types) := (float, RealFloat)
 Operators(Self) := (*, Times, null)
 Operators(Binary) := (*, Times, 1, 1)
-!Infer
+!Infer Slow
 ".TrimStart();
             var assemby = source.UnitsToAssembly();
             foreach (var unit in new[] { "Mass", "Length" })
@@ -85,7 +85,7 @@ Units(Base) := Mass | Length
 Real(Types) := (float, RealFloat)
 Operators(Self) := (*, Times, null) | (/, Per, null)
 Operators(Binary) := (*, Times, 1, 1) | (/, Per, 1, -1)
-!Infer";
+!Infer Slow";
             var assemby = source.UnitsToAssembly();
             foreach (var unit in new[] { "Mass", "Length" })
             {
