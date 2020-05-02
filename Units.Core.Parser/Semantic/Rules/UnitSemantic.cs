@@ -12,7 +12,7 @@ namespace Units.Core.Parser.Semantic.Rules
             var unit = _state.GetUnit(@for);
             _state.MesurmentUnits.Add(new MesurmentUnit()
             {
-                Derive = expr,
+                ConvertTo = expr,
                 For = unit,
                 Name = name,
                 Postfix = sym
