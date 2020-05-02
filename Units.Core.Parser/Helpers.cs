@@ -1,7 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Net;
 using System.Text.RegularExpressions;
+using Units.Core.Parser.Metadata;
 using Units.Core.Parser.State;
 
 namespace Units.Core.Parser
@@ -46,16 +49,54 @@ namespace Units.Core.Parser
                 i++;
             }
         }
+        private static Dictionary<string, (IUnit unit, int depth)> shortest { get; } = new Dictionary<string, (IUnit, int)>();
+        public static (IUnit unit, int depth) ShortestUnitFast(BinaryCompositUnit bcu, ParserState state)
+        {
+            IUnit uppers = null, downers = null;
+            var dimensions = bcu.GetBaseUnitCount();
+            foreach (var bd in dimensions.Where(i => i.Value < 0))
+            {
+                var a = bd.Key;
+                var n = bd.Value * -1;
+                while (--n >= 0)
+                {
+                    if (downers is null)
+                        downers = a;
+                    else
+                        downers = new BinaryCompositUnit(downers, BinaryOperator.TIMES, a);
+                }
+            }
+            foreach (var bd in dimensions.Where(i => i.Value > 0))
+            {
+                var a = bd.Key;
+                var n = bd.Value;
+                while (--n >= 0)
+                {
+                    if (uppers is null)
+                        uppers = a;
+                    else
+                        uppers = new BinaryCompositUnit(uppers, BinaryOperator.TIMES, a);
+                }
+            }
+            var ret = downers is null ?
+                uppers ?? Scalar.Get :
+                new BinaryCompositUnit(uppers ?? Scalar.Get, BinaryOperator.OVER, downers, null, true);
+            return (MakeItNice(state, ret), dimensions.Select(i => i.Value).Select(Math.Abs).Sum() + (downers is null ? 0 : 1));
+        }
         public static (IUnit unit, int depth) ShortestUnit(BinaryCompositUnit compositUnit, ParserState state)
         {
             //var dict = compositUnit.GetNamedBaseUnitsCount();
+            var wantedName = compositUnit.SiName(true);
+            if (shortest.ContainsKey(wantedName))
+                return shortest[wantedName];
             var curString = string.Empty;
             var onlyBase = state.Units.Where(i => i is Unit)
-                .Where(i => compositUnit.SiName(true).Contains(i.Name))
+                .Where(i => wantedName.Contains(i.Name))
                 .ToList();
             var start = onlyBase
                 .Select(i => (i, 0))
-                .Append((Scalar.Get, 0));
+                .Append((Scalar.Get, 0))
+                .Union(shortest.Values);
             var stack = new List<(IUnit unit, int depth)>(start);
             var cur = stack.First();
             var visitedB = new HashSet<(IUnit, IUnit, IOperator)>();
@@ -89,13 +130,16 @@ namespace Units.Core.Parser
                             if (visited.Contains(newUnit))
                                 continue;
                             visited.Add(newUnit);
-                            stack.Add((newUnit, cur.depth + 1));
+                            var toAdd = (newUnit, cur.depth + 1);
+                            if (!shortest.ContainsKey(newUnit.SiName(true)))
+                                shortest.Add(newUnit.SiName(true), (MakeItNice(state, toAdd.newUnit), toAdd.Item2));
+                            stack.Add(toAdd);
                         }
                     }
                 }
             }
             var ret = (MakeItNice(state, cur.unit), cur.depth);
-            return ret;
+            return  ret;
         }
         public static IUnit MakeItNice(ParserState state, IUnit unit)
         {
@@ -107,6 +151,49 @@ namespace Units.Core.Parser
                     bcu.IsInfered);
             }
             return unit;
+        }
+        public static IEnumerable<IEnumerable<T>> Batched<T>(this IEnumerable<T> col, int batchSize)
+        {
+            var i = 0;
+            List<T> cur = null;
+
+            do
+            {
+                yield return cur = col.Skip(i).Take(batchSize).ToList();
+                i += batchSize;
+            } while (cur.Any());
+        }
+        public static double GetHashSetHealth<T>(this HashSet<T> col)
+        {
+            int len = col.Count;
+            var healths = col.Select(i => col
+                    .Where(j => !j.Equals(i))
+                    .Select(j => Math.Abs(i.GetHashCode() ^ j.GetHashCode()))
+                    .Min())
+                .Select(i => i == 0 ? 0 : 1 + Math.Log10(Math.Abs(i))/len);
+            var health = healths.Aggregate((i, j) => i * j);
+            return health;
+        }
+        public static IEnumerable<MesurmentUnit> ToMesurmentUnits(this IEnumerable<UnitsNetUnit> units, IUnit unit)
+        {
+            foreach(var u in units)
+            {
+                var clean = u.FromBaseToUnitFunc.CleanExpression();
+                yield return new MesurmentUnit
+                {
+                    ConvertTo = clean,
+                    For = unit,
+                    Name = u.SingularName,
+                    Postfix = u.Postfix
+                };
+            }
+        }
+        public static string CleanExpression(this string expr)
+        {
+            var rep1 = Regex.Replace(expr, @"Math.Pow\((?<base>[^,]*), *(?<exp>[^)]*) *\)", "$1^$2")
+                    .Replace("Math.PI", Math.PI.ToString(CultureInfo.GetCultureInfo("en-US").NumberFormat));
+            var rep2 = Regex.Replace(rep1, "(?<num>[0-9]+)(?<pf>[dlfuDLFU])", "$1");
+            return rep2;
         }
     }
 }

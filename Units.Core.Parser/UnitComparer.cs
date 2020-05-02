@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 using Units.Core.Parser.State;
 
 namespace Units.Core.Parser
@@ -13,6 +15,7 @@ namespace Units.Core.Parser
             Wanted = wanted;
             WantedString = wanted.SiName();
         }
+        private static readonly char[] nums = Enumerable.Range(0, 9).Select(i => (char)(i + '0')).ToArray();
         public int Dist((IUnit unit, int depth) a)
         {
             var name1 = a.unit is IReadonlyUnit rou ? rou.SiName(true) : a.unit.SiName();
@@ -22,8 +25,8 @@ namespace Units.Core.Parser
             {
                 count1 += WantedString[^i] == name1[^i] ? 0 : 1;
             }
-            var distance = count1 << a.depth;
-            return distance;
+            double distance = Math.Pow(count1, a.depth);
+            return distance < 0 || distance > int.MaxValue ? int.MaxValue : (int)distance;
         }
         public int Compare((IUnit, int) x, (IUnit, int) y)
         {
