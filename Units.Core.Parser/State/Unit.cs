@@ -10,6 +10,11 @@
     {
         public Unit(string name) : base(name) { }
 
+        public override IUnit Rename(string newName)
+        {
+            return new Unit(newName);
+        }
+
         public override IUnit Simplify() =>
             this;
 

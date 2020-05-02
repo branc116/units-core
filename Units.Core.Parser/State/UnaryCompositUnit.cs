@@ -23,7 +23,12 @@
 
         public override IUnit WithSiName()
         {
-            return new UnaryCompositUnit(Unit, UnaryOperator, SiName());
+            return Rename(SiName());
+        }
+
+        public override IUnit Rename(string newName)
+        {
+            return new UnaryCompositUnit(Unit, UnaryOperator, newName, IsInfered);
         }
     }
 }

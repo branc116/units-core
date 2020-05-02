@@ -38,7 +38,7 @@ namespace Units.Core.Parser.State
 
         public override bool Equals(object obj) =>
             Equals(obj as ReadonlyUnit<T>) ||
-            Equals(obj as IUnit);
+            (!(obj is ReadonlyUnit<T>) && Equals(obj as IUnit));
 
         public bool Equals(ReadonlyUnit<T> other) =>
             other != null && other.SiName(true) == SiName(true);
@@ -49,5 +49,7 @@ namespace Units.Core.Parser.State
             _hashCode ??= SiName(true).GetHashCode();
         public override string ToString() =>
             Name ?? SiName(true);
+
+        public abstract IUnit Rename(string newName);
     }
 }

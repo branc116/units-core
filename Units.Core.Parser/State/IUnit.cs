@@ -52,6 +52,7 @@
         string SiName();
         IUnit WithSiName();
         bool IsInfered { get; }
+        IUnit Rename(string newName);
     }
     public interface IUnit<T> : IUnit where T : IUnit<T>
     {

@@ -21,5 +21,6 @@
         public static bool Equals(Scalar sc) => sc is { };
         public static bool Equals(IUnit unit) => unit?.Equals(Get) ?? false;
 
+        public IUnit Rename(string newName) => this;
     }
 }

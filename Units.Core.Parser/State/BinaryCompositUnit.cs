@@ -215,11 +215,16 @@ namespace Units.Core.Parser.State
         /// <inheritdoc/>
         public override IUnit WithSiName()
         {
-            return new BinaryCompositUnit(Unit1, Operator, Unit2, SiName(true));
+            return Rename(SiName(true));
         }
         public override string ToString()
         {
             return $"{Name} ({Unit1.Name} {Operator.Name} {Unit2.Name})";
+        }
+
+        public override IUnit Rename(string newName)
+        {
+            return new BinaryCompositUnit(Unit1, Operator, Unit2, newName, IsInfered);
         }
     }
 }
