@@ -48,7 +48,7 @@ Force := Mass * Acceleration
 Pressure := Force / Area
 Energy := Force * Length
 
-!Infer
+!Infer Fast
 
 !Export All, ./MyUnits";
     }

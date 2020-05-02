@@ -27,6 +27,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Generators\GenerateConverters.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>GenerateConverters.cs</LastGenOutput>
+    </None>
     <None Update="Generators\GenerateEdgeOperators.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>GenerateEdgeOperators.cs</LastGenOutput>
@@ -54,6 +58,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Generators\GenerateConverters.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>GenerateConverters.tt</DependentUpon>
+    </Compile>
     <Compile Update="Generators\GenerateEdgeOperators.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
