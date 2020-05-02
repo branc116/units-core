@@ -6,7 +6,7 @@ function Start-UnitsNetIntegration {
     }
     Set-Location .bin;
     if (-not (Test-Path UnitsNet)) {
-        git clone git@github.com:angularsen/UnitsNet.git
+        git clone https://github.com/angularsen/UnitsNet.git
     }else {
         Set-Location UnitsNet;
         git pull;
