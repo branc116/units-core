@@ -102,7 +102,25 @@ Operators(Binary) := (*, Times, 1, 1) | (/, Per, 1, -1)
         {
             var src = Units.Core.CommandLineOptions.Init.FullSiStandard;
             var assebly = src.UnitsToAssembly();
+        }
+        [TestMethod]
+        public void TestUnitsNetAll()
+        {
+            var src = @"
+Operators(Binary) := (*, Times, 1, 1) | (/, Per, 1, -1)
+Operators(Self) := (*, Times, null) | (/, Per, null)
+Operators(Self) := (<, Lt, bool) | (<=, Let, bool) | (>, Gt, bool) | (>=, Get, bool) | (==, Eq, bool) | (!=, Ne, bool) | (+, Plus, null) | (-, Minus, null)
+Real(Types) := (float, RealFloat)
 
+Operator(*) := a = b * c | a = c * b | c = a / b | b = a / c
+Operator(/) := a = b / c | c = b / a | b = a * c | b = c * a
+
+!UnitsNet All
+
+!Infer Fast
+
+!Export All, ./MyUnits".TrimStart();
+            var assembly = src.UnitsToAssembly();
         }
     }
 }
