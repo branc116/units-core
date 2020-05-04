@@ -28,6 +28,55 @@ namespace Units.Core.Generators
         /// </summary>
         public virtual string TransformText()
         {
+            this.Write("\r\n");
+            
+            #line 7 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateConverters.tt"
+ foreach(var con in GetConverts()) {  
+            
+            #line default
+            #line hidden
+            this.Write("    ///<summary>\r\n    /// ");
+            
+            #line 9 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateConverters.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(con.summary ?? string.Empty));
+            
+            #line default
+            #line hidden
+            this.Write("\r\n    ///</summary>\r\n    ///<remarks>\r\n    /// ");
+            
+            #line 12 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateConverters.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(con.remarks ?? string.Empty));
+            
+            #line default
+            #line hidden
+            this.Write("\r\n    ///</remarks>\r\n    public ");
+            
+            #line 14 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateConverters.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(con.name));
+            
+            #line default
+            #line hidden
+            this.Write("(");
+            
+            #line 14 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateConverters.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(con.@params));
+            
+            #line default
+            #line hidden
+            this.Write(") => \r\n        ");
+            
+            #line 15 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateConverters.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(con.expr));
+            
+            #line default
+            #line hidden
+            this.Write(";\r\n");
+            
+            #line 16 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateConverters.tt"
+ }  
+            
+            #line default
+            #line hidden
             return this.GenerationEnvironment.ToString();
         }
     }

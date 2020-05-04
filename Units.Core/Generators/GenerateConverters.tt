@@ -3,3 +3,14 @@
 <#@ import namespace="System.Linq" #>
 <#@ import namespace="System.Text" #>
 <#@ import namespace="System.Collections.Generic" #>
+
+<# foreach(var con in GetConverts()) {  #>
+    ///<summary>
+    /// <#=  con.summary ?? string.Empty #>
+    ///</summary>
+    ///<remarks>
+    /// <#=  con.remarks ?? string.Empty #>
+    ///</remarks>
+    public <#=  con.name #>(<#= con.@params #>) => 
+        <#= con.expr #>;
+<# }  #>
