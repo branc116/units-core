@@ -6,7 +6,9 @@ using System.Net;
 using System.Text.RegularExpressions;
 using Units.Core.Parser.Metadata;
 using Units.Core.Parser.State;
-
+using Expr = MathNet.Symbolics.Expression;
+using Ex = MathNet.Symbolics.SymbolicExpression;
+using MathNet.Symbolics;
 namespace Units.Core.Parser
 {
     /// <summary>
@@ -184,7 +186,9 @@ namespace Units.Core.Parser
                     ConvertTo = clean,
                     For = unit,
                     Name = u.SingularName,
-                    Postfix = u.Postfix
+                    Postfix = u.Postfix,
+                    Remarks = u.XmlDocRemarks,
+                    Summary = u.XmlDocSummary
                 };
             }
         }
@@ -192,8 +196,36 @@ namespace Units.Core.Parser
         {
             var rep1 = Regex.Replace(expr, @"Math.Pow\((?<base>[^,]*), *(?<exp>[^)]*) *\)", "$1^$2")
                     .Replace("Math.PI", Math.PI.ToString(CultureInfo.GetCultureInfo("en-US").NumberFormat));
-            var rep2 = Regex.Replace(rep1, "(?<num>[0-9]+)(?<pf>[dlfuDLFU])", "$1");
+            var rep2 = Regex.Replace(rep1, "(?<num>[0-9]+)(?<pf>[dlfumDLFU])", "$1");
+            
             return rep2;
+        }
+        public static string AddExplicitConvertToNumbers(this string expr, string convertTo)
+        {
+            var rep3 = Regex.Replace(expr, @"(?<num>(([+\-]?\d)((\d|[eE\-+.]))*))", $"(({convertTo})($1))");
+            return rep3;
+        }
+        public static string Aprox(this string expr)
+        {
+            var x = Expr.Symbol("X");
+            var e = Ex.Parse($"{expr} - X");
+            var solved = SolveSimpleRoot(x, e.Expression);
+            var aprox = new Ex(solved).Approximate();
+            return aprox.ToString();
+        }
+        public static Expr SolveSimpleRoot(Expr variable, Expr expr)
+        {
+            // try to bring expression into polynomial form
+            Expr simple = Algebraic.Expand(Rational.Numerator(Rational.Simplify(variable, expr)));
+
+            // extract coefficients, solve known forms of order up to 1
+            Expr[] coeff = Polynomial.Coefficients(variable, simple);
+            switch (coeff.Length)
+            {
+                case 1: return Expr.Zero.Equals(coeff[0]) ? variable : Expr.Undefined;
+                case 2: return Rational.Simplify(variable, Algebraic.Expand(-coeff[0] / coeff[1]));
+                default: return Expr.Undefined;
+            }
         }
     }
 }

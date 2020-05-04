@@ -9,6 +9,7 @@ namespace Units.Core.Parser.Metadata
         public string Name { get; set; }
         public string BaseUnit { get; set; }
         public string XmlDoc { get; set; }
+        public string XmlDocRemarks { get; set; }
         public Dictionary<string, int> BaseDimensions { get; set; }
         public UnitsNetUnit[] Units { get; set; }
     }
