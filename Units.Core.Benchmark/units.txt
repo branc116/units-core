@@ -1,0 +1,13 @@
+Operators(Binary) := (*, Times, 1, 1) | (/, Per, 1, -1)
+Operators(Self) := (*, Times, null) | (/, Per, null)
+Operators(Self) := (<, Lt, bool) | (<=, Let, bool) | (>, Gt, bool) | (>=, Get, bool) | (==, Eq, bool) | (!=, Ne, bool) | (+, Plus, null) | (-, Minus, null)
+Real(Types) := (float, RealFloat) | (double, RealDouble)
+
+Operator(*) := a = b * c | a = c * b | c = a / b | b = a / c
+Operator(/) := a = b / c | c = b / a | b = a * c | b = c * a
+
+UnitsNet(Dimension) := Length
+
+!Infer Fast
+
+!Export All, ./MyUnits
