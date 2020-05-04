@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace Units.Core
 {
@@ -19,6 +20,13 @@ namespace Units.Core
                     Console.WriteLine($"Not creating dir: {path}");
                 }
             }
+        }
+        internal static IEnumerable<string> NonEmptyOrWhitespaceLines(this string str)
+        {
+            var lines = str.Split(Environment.NewLine)
+              .Select(i => i.Trim())
+              .Where(i => !string.IsNullOrWhiteSpace(i));
+            return lines;
         }
     }
 }

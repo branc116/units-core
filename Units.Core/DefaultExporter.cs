@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using Units.Core.Generators;
 using Units.Core.Parser;
@@ -40,8 +41,9 @@ namespace Units.Core
                 if (unit.IsInfered)
                     path = Path.Combine(path, "Infered");
                 path = Path.Combine(path, $"{unit.Name}.cs");
-                var text = new GenerateUnit(state, unit, real).TransformText();
-                File.WriteAllText(path, text);
+                var text = new GenerateUnit(state, unit, real).TransformText()
+                    .NonEmptyOrWhitespaceLines().ToArray();
+                File.WriteAllLines(path, text);
             }
             return true;
         }
@@ -51,8 +53,9 @@ namespace Units.Core
             var numbersDirectory = Path.Combine(BaseDir, location, "Numbers");
             new[] { location, numbersDirectory }.CreateDirs();
             var path = Path.Combine(numbersDirectory, "Wrappers.cs");
-            var text = new GenerateWrappers(state).TransformText();
-            File.WriteAllText(path, text);
+            var text = new GenerateWrappers(state).TransformText()
+                .NonEmptyOrWhitespaceLines().ToArray();
+            File.WriteAllLines(path, text);
             return true;
         }
     }
