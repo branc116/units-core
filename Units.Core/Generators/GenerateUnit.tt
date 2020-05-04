@@ -5,13 +5,22 @@
 <#@ import namespace="System.Collections.Generic" #>
 
 namespace <#= Namespace() #> {
+    using System.Runtime.CompilerServices;
     <#=  Usings() #>
+    ///<summary>
+    <#= Summary() #>
+    ///</summary>
+    ///<remarks>
+    <#= Remarks() #>
+    ///</remarks>
     public readonly struct <#= Unit.Name  #>: IEquatable<<#= Unit.Name  #>> {
         public readonly Scalar RawValue;
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public <#=  Unit.Name #>(Scalar value) {
             RawValue = value;
         }
         <# foreach(var meth in SelfOps.Where(i => i.Symbol != "*" && i.Symbol != "/")) { #>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public static <#=  meth.RetType ?? Unit.Name #> operator <#=  meth.Symbol #>(<#= Unit.Name #> op1, <#= Unit.Name #> op2) =>
                 <#  if (meth.RetType == null) { #>
                 new <#=  Unit.Name #>(op1.RawValue.Op<#=  meth.Name #>(op2.RawValue));
@@ -19,14 +28,21 @@ namespace <#= Namespace() #> {
                 ((Scalar)op1).Op<#=  meth.Name #>((Scalar)op2);
                 <#  } #>
         <#  } #>
-        <#=  EdgeOps(Unit) #>
-
+        <#=  EdgeOps() #>
+        <#=  Converts() #>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static explicit operator <#= Unit.Name #>(<#= Real.ClrName #> from) => new <#= Unit.Name #>(from);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static explicit operator <#= Unit.Name #>(Scalar from) => new <#=  Unit.Name #>(from);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static explicit operator Scalar(<#= Unit.Name #> from) => from.RawValue;
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static explicit operator <#= Real.ClrName #>(<#= Unit.Name #> from) => (<#= Real.ClrName #>)from.RawValue;
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override bool Equals(object obj) => obj is <#= Unit.Name  #> ut && this.Equals(ut);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool Equals(<#= Unit.Name #> other) => true; //return other != null && this == other;
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override int GetHashCode() => RawValue.GetHashCode();
     }
 }

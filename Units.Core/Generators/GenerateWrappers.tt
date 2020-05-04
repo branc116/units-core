@@ -12,25 +12,35 @@ namespace Numbers {
 }
 <#  foreach(var r in RealDefs) { #>
 namespace Units.<#= r.WrapName #> { }
+namespace Units.<#= r.WrapName #>.Infers { }
 namespace Numbers.<#= r.WrapName #>s {
     using Numbers;
     using System;
     using Scalar = Numbers.<#= r.WrapName #>s.<#= r.WrapName #>;
     using Units.<#= r.WrapName #>;
+    using Units.<#= r.WrapName #>.Infers;
+    using System.Runtime.CompilerServices;
+
     public readonly struct <#=  r.WrapName #> : IEquatable<<#=  r.WrapName #>>, IReal<<#= r.WrapName #>> {
         private readonly <#= r.ClrName #> _data;
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public <#=  r.WrapName #>(<#= r.ClrName #> data) {
             _data = data;
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public <#=  r.WrapName #>(<#= r.WrapName #> data) {
             _data = data._data;
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static implicit operator <#=  r.WrapName #>(<#= r.ClrName #> raw) => new <#= r.WrapName #>(raw);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static explicit operator <#=  r.ClrName #>(<#= r.WrapName #> raw) => raw._data;
         <# foreach(var meth in SelfOps) { #>
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public <#=  meth.RetType ?? r.WrapName #> Op<#= meth.Name  #>(<#= r.WrapName #> op2) {
                 return _data <#=  meth.Symbol #> op2._data;
             }
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public static <#=  meth.RetType ?? r.WrapName #> operator <#=  meth.Symbol #>(<#= r.WrapName #> op1, <#= r.WrapName #> op2) {
                 <#  if (meth.RetType != null) { #>
                 return op1._data <#=  meth.Symbol #> op2._data;

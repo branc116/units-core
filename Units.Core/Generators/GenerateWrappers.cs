@@ -70,255 +70,275 @@ namespace Units.Core.Generators
             
             #line default
             #line hidden
-            this.Write(" { }\r\nnamespace Numbers.");
+            this.Write(" { }\r\nnamespace Units.");
             
             #line 15 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateWrappers.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(r.WrapName));
             
             #line default
             #line hidden
+            this.Write(".Infers { }\r\nnamespace Numbers.");
+            
+            #line 16 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateWrappers.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(r.WrapName));
+            
+            #line default
+            #line hidden
             this.Write("s {\r\n    using Numbers;\r\n    using System;\r\n    using Scalar = Numbers.");
-            
-            #line 18 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateWrappers.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(r.WrapName));
-            
-            #line default
-            #line hidden
-            this.Write("s.");
-            
-            #line 18 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateWrappers.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(r.WrapName));
-            
-            #line default
-            #line hidden
-            this.Write(";\r\n    using Units.");
             
             #line 19 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateWrappers.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(r.WrapName));
             
             #line default
             #line hidden
-            this.Write(";\r\n    public readonly struct ");
+            this.Write("s.");
+            
+            #line 19 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateWrappers.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(r.WrapName));
+            
+            #line default
+            #line hidden
+            this.Write(";\r\n    using Units.");
             
             #line 20 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateWrappers.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(r.WrapName));
+            
+            #line default
+            #line hidden
+            this.Write(";\r\n    using Units.");
+            
+            #line 21 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateWrappers.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(r.WrapName));
+            
+            #line default
+            #line hidden
+            this.Write(".Infers;\r\n    using System.Runtime.CompilerServices;\r\n\r\n    public readonly struc" +
+                    "t ");
+            
+            #line 24 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateWrappers.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(r.WrapName));
             
             #line default
             #line hidden
             this.Write(" : IEquatable<");
             
-            #line 20 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateWrappers.tt"
+            #line 24 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateWrappers.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(r.WrapName));
             
             #line default
             #line hidden
             this.Write(">, IReal<");
             
-            #line 20 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateWrappers.tt"
+            #line 24 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateWrappers.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(r.WrapName));
             
             #line default
             #line hidden
             this.Write("> {\r\n        private readonly ");
             
-            #line 21 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateWrappers.tt"
+            #line 25 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateWrappers.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(r.ClrName));
             
             #line default
             #line hidden
-            this.Write(" _data;\r\n        public ");
+            this.Write(" _data;\r\n        [MethodImpl(MethodImplOptions.AggressiveInlining)]\r\n        publ" +
+                    "ic ");
             
-            #line 22 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateWrappers.tt"
+            #line 27 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateWrappers.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(r.WrapName));
             
             #line default
             #line hidden
             this.Write("(");
             
-            #line 22 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateWrappers.tt"
+            #line 27 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateWrappers.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(r.ClrName));
             
             #line default
             #line hidden
-            this.Write(" data) {\r\n            _data = data;\r\n        }\r\n        public ");
+            this.Write(" data) {\r\n            _data = data;\r\n        }\r\n        [MethodImpl(MethodImplOpt" +
+                    "ions.AggressiveInlining)]\r\n        public ");
             
-            #line 25 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateWrappers.tt"
+            #line 31 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateWrappers.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(r.WrapName));
             
             #line default
             #line hidden
             this.Write("(");
             
-            #line 25 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateWrappers.tt"
+            #line 31 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateWrappers.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(r.WrapName));
             
             #line default
             #line hidden
-            this.Write(" data) {\r\n            _data = data._data;\r\n        }\r\n        public static impli" +
-                    "cit operator ");
+            this.Write(" data) {\r\n            _data = data._data;\r\n        }\r\n        [MethodImpl(MethodI" +
+                    "mplOptions.AggressiveInlining)]\r\n        public static implicit operator ");
             
-            #line 28 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateWrappers.tt"
+            #line 35 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateWrappers.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(r.WrapName));
             
             #line default
             #line hidden
             this.Write("(");
             
-            #line 28 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateWrappers.tt"
+            #line 35 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateWrappers.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(r.ClrName));
             
             #line default
             #line hidden
             this.Write(" raw) => new ");
             
-            #line 28 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateWrappers.tt"
+            #line 35 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateWrappers.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(r.WrapName));
             
             #line default
             #line hidden
-            this.Write("(raw);\r\n        public static explicit operator ");
+            this.Write("(raw);\r\n        [MethodImpl(MethodImplOptions.AggressiveInlining)]\r\n        publi" +
+                    "c static explicit operator ");
             
-            #line 29 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateWrappers.tt"
+            #line 37 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateWrappers.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(r.ClrName));
             
             #line default
             #line hidden
             this.Write("(");
             
-            #line 29 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateWrappers.tt"
+            #line 37 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateWrappers.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(r.WrapName));
             
             #line default
             #line hidden
             this.Write(" raw) => raw._data;\r\n        ");
             
-            #line 30 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateWrappers.tt"
+            #line 38 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateWrappers.tt"
  foreach(var meth in SelfOps) { 
             
             #line default
             #line hidden
-            this.Write("            public ");
+            this.Write("            [MethodImpl(MethodImplOptions.AggressiveInlining)]\r\n            publi" +
+                    "c ");
             
-            #line 31 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateWrappers.tt"
+            #line 40 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateWrappers.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(meth.RetType ?? r.WrapName));
             
             #line default
             #line hidden
             this.Write(" Op");
             
-            #line 31 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateWrappers.tt"
+            #line 40 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateWrappers.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(meth.Name));
             
             #line default
             #line hidden
             this.Write("(");
             
-            #line 31 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateWrappers.tt"
+            #line 40 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateWrappers.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(r.WrapName));
             
             #line default
             #line hidden
             this.Write(" op2) {\r\n                return _data ");
             
-            #line 32 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateWrappers.tt"
+            #line 41 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateWrappers.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(meth.Symbol));
             
             #line default
             #line hidden
-            this.Write(" op2._data;\r\n            }\r\n            public static ");
+            this.Write(" op2._data;\r\n            }\r\n            [MethodImpl(MethodImplOptions.AggressiveI" +
+                    "nlining)]\r\n            public static ");
             
-            #line 34 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateWrappers.tt"
+            #line 44 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateWrappers.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(meth.RetType ?? r.WrapName));
             
             #line default
             #line hidden
             this.Write(" operator ");
             
-            #line 34 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateWrappers.tt"
+            #line 44 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateWrappers.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(meth.Symbol));
             
             #line default
             #line hidden
             this.Write("(");
             
-            #line 34 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateWrappers.tt"
+            #line 44 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateWrappers.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(r.WrapName));
             
             #line default
             #line hidden
             this.Write(" op1, ");
             
-            #line 34 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateWrappers.tt"
+            #line 44 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateWrappers.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(r.WrapName));
             
             #line default
             #line hidden
             this.Write(" op2) {\r\n                ");
             
-            #line 35 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateWrappers.tt"
+            #line 45 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateWrappers.tt"
   if (meth.RetType != null) { 
             
             #line default
             #line hidden
             this.Write("                return op1._data ");
             
-            #line 36 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateWrappers.tt"
+            #line 46 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateWrappers.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(meth.Symbol));
             
             #line default
             #line hidden
             this.Write(" op2._data;\r\n                ");
             
-            #line 37 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateWrappers.tt"
+            #line 47 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateWrappers.tt"
   } else { 
             
             #line default
             #line hidden
             this.Write("                return new ");
             
-            #line 38 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateWrappers.tt"
+            #line 48 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateWrappers.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(r.WrapName));
             
             #line default
             #line hidden
             this.Write("(op1._data ");
             
-            #line 38 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateWrappers.tt"
+            #line 48 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateWrappers.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(meth.Symbol));
             
             #line default
             #line hidden
             this.Write(" op2._data);\r\n                ");
             
-            #line 39 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateWrappers.tt"
+            #line 49 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateWrappers.tt"
   } 
             
             #line default
             #line hidden
             this.Write("            }\r\n        ");
             
-            #line 41 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateWrappers.tt"
+            #line 51 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateWrappers.tt"
   } 
             
             #line default
             #line hidden
             this.Write("        ");
             
-            #line 42 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateWrappers.tt"
+            #line 52 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateWrappers.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(EdgeOps(Scalar)));
             
             #line default
             #line hidden
             this.Write("\r\n        public override bool Equals(object obj) => obj is ");
             
-            #line 43 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateWrappers.tt"
+            #line 53 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateWrappers.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(r.WrapName));
             
             #line default
             #line hidden
             this.Write(" wn && Equals(wn);\r\n        public bool Equals(");
             
-            #line 44 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateWrappers.tt"
+            #line 54 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateWrappers.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(r.WrapName));
             
             #line default
@@ -327,7 +347,7 @@ namespace Units.Core.Generators
                     "=> _data.GetHashCode();\r\n        public override string ToString() => _data.ToSt" +
                     "ring();\r\n    }\r\n}\r\n");
             
-            #line 49 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateWrappers.tt"
+            #line 59 "C:\Users\Branimir\Source\repos\OriginalLibs\CoreUnits\Units.Core\Generators\GenerateWrappers.tt"
   } 
             
             #line default
