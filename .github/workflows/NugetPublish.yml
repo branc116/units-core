@@ -22,6 +22,8 @@ jobs:
       shell: powershell
     - name: Generate Grammar
       run: powershell Units.Core.Parser\Grammar\GenerateGrammar.ps1
+    - name: Get units net units
+      run: powershell Units.Core.Parser\Metadata\GetList.ps1
     - name: Publish NuGet
       uses: rohith/publish-nuget@v2.3.0
       with:
